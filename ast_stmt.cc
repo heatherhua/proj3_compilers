@@ -7,6 +7,8 @@
 #include "ast_decl.h"
 #include "ast_expr.h"
 #include "errors.h"
+#include <map>
+#include <vector> 
 
 Program::Program(List<Decl*> *d) {
     Assert(d != NULL);
@@ -29,11 +31,32 @@ void Program::Check() {
 
     // sample test - not the actual working code
     // replace it with your own implementation
-    if ( decls->NumElements() >= 2 ) {
-      // Decl *newDecl  = decls->Nth(1);
-      // Decl *prevDecl = decls->Nth(0);
-      // ReportError::DeclConflict(newDecl, prevDecl);
+    
+    //Declare vector for scopes
+    //Declare Program scope
+    vector< map<Identifier *, Node *> > scopesVector;
+    std::map<Identifier *, Node *> programScope;
+    scopesVector.push_back(programScope);
+     
+    for(int i = 0; i < decls->NumElements(); i++){
+        //Add Decls into scope aka map
+        Decl *curr = decls->Nth(i);
+        programScope.insert( std::pair<Identifier *, Node *>(curr->getIdentifier(), curr) );
+        
+        // Check curr Decl to for left child. In order traversal
+        //TODO
+        
+        std::cout << "Number of items in program scope: " << programScope.size() << "\n";
     }
+    
+//    if ( decls->NumElements() >= 2 ) {
+        // Check that decl's dont conflict, loop through all
+//       Decl *newDecl  = decls->Nth(1);
+//       Decl *prevDecl = decls->Nth(0);
+//       ReportError::DeclConflict(newDecl, prevDecl);
+       
+       // Decl.check())
+//    }
 }
 
 StmtBlock::StmtBlock(List<VarDecl*> *d, List<Stmt*> *s) {

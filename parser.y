@@ -18,9 +18,23 @@
  */
 #include "scanner.h" // for yylex
 #include "parser.h"
-#include "errors.h"
+#include "errors.h"   
+    
 
 void yyerror(const char *msg); // standard error-handling routine
+
+
+
+//std::vector< std::map <Identifier, Node*> > myVect;
+//Node *x = new VarDecl(new Identifier(yylloc, "yay"), Type::intType);
+
+//Identifier *id = new Identifier(yylloc, "work");
+//std::map <Identifier, Node *> m;
+
+//m.insert(std::pair<Identifier, Node*>(id, x));
+//std::map<Identifier, Node> m ;
+//myVect.push_back(m);
+
 
 %}
 
@@ -132,11 +146,12 @@ Program   :    DeclList            {
                                        * yacc to set up yylloc. You can remove 
                                        * it once you have other uses of @n*/
                                       Program *program = new Program($1);
+    
                                       // if no errors, advance to next phase
                                       if (ReportError::NumErrors() == 0) {
                                           // program->Print(0);
                                           program->Check();
-                                      }
+                                      }                            
                                     }
           ;
 
