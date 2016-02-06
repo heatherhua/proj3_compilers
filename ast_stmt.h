@@ -24,8 +24,8 @@ class IntConstant;
 void yyerror(const char *msg);
 
 class Program : public Node
-{
-  protected:
+{ 
+    protected:
      List<Decl*> *decls;
      
   public:
