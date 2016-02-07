@@ -51,6 +51,7 @@ class StmtBlock : public Stmt
   public:
     StmtBlock(List<VarDecl*> *variableDeclarations, List<Stmt*> *statements);
     const char *GetPrintNameForNode() { return "StmtBlock"; }
+//    void Check(vector< map<Node *, Node *> > * vector);
     void PrintChildren(int indentLevel);
 };
 
@@ -62,6 +63,7 @@ class DeclStmt: public Stmt
   public:
     DeclStmt(Decl *d);
     const char *GetPrintNameForNode() { return "DeclStmt"; }
+//    void Check(vector< map<Node *, Node *> > * vector);
     void PrintChildren(int indentLevel);
 };
   
@@ -91,6 +93,7 @@ class ForStmt : public LoopStmt
   public:
     ForStmt(Expr *init, Expr *test, Expr *step, Stmt *body);
     const char *GetPrintNameForNode() { return "ForStmt"; }
+//    void Check(vector< map<Node *, Node *> > * vector);
     void PrintChildren(int indentLevel);
 };
 
@@ -99,6 +102,7 @@ class WhileStmt : public LoopStmt
   public:
     WhileStmt(Expr *test, Stmt *body) : LoopStmt(test, body) {}
     const char *GetPrintNameForNode() { return "WhileStmt"; }
+//    void Check(vector< map<Node *, Node *> > * vector);
     void PrintChildren(int indentLevel);
 };
 
@@ -111,6 +115,7 @@ class IfStmt : public ConditionalStmt
     IfStmt() : ConditionalStmt(), elseBody(NULL) {}
     IfStmt(Expr *test, Stmt *thenBody, Stmt *elseBody);
     const char *GetPrintNameForNode() { return "IfStmt"; }
+//    void Check(vector< map<Node *, Node *> > * vector);
     void PrintChildren(int indentLevel);
 };
 
@@ -119,6 +124,7 @@ class IfStmtExprError : public IfStmt
   public:
     IfStmtExprError() : IfStmt() { yyerror(this->GetPrintNameForNode()); }
     const char *GetPrintNameForNode() { return "IfStmtExprError"; }
+//    void Check(vector< map<Node *, Node *> > * vector);
 };
 
 class BreakStmt : public Stmt 
@@ -126,6 +132,7 @@ class BreakStmt : public Stmt
   public:
     BreakStmt(yyltype loc) : Stmt(loc) {}
     const char *GetPrintNameForNode() { return "BreakStmt"; }
+//    void Check(vector< map<Node *, Node *> > * vector);
 };
 
 class ContinueStmt : public Stmt 
@@ -133,6 +140,7 @@ class ContinueStmt : public Stmt
   public:
     ContinueStmt(yyltype loc) : Stmt(loc) {}
     const char *GetPrintNameForNode() { return "ContinueStmt"; }
+//    void Check(vector< map<Node *, Node *> > * vector);
 };
 
 class ReturnStmt : public Stmt  
@@ -143,6 +151,7 @@ class ReturnStmt : public Stmt
   public:
     ReturnStmt(yyltype loc, Expr *expr = NULL);
     const char *GetPrintNameForNode() { return "ReturnStmt"; }
+//    void Check(vector< map<Node *, Node *> > * vector);
     void PrintChildren(int indentLevel);
 };
 
@@ -165,6 +174,7 @@ class Case : public SwitchLabel
     Case() : SwitchLabel() {}
     Case(Expr *label, Stmt *stmt) : SwitchLabel(label, stmt) {}
     const char *GetPrintNameForNode() { return "Case"; }
+//    void Check(vector< map<Node *, Node *> > * vector);
 };
 
 class Default : public SwitchLabel
@@ -172,6 +182,7 @@ class Default : public SwitchLabel
   public:
     Default(Stmt *stmt) : SwitchLabel(stmt) {}
     const char *GetPrintNameForNode() { return "Default"; }
+//    void Check(vector< map<Node *, Node *> > * vector);
 };
 
 class SwitchStmt : public Stmt
@@ -185,6 +196,7 @@ class SwitchStmt : public Stmt
     SwitchStmt() : expr(NULL), cases(NULL), def(NULL) {}
     SwitchStmt(Expr *expr, List<Stmt*> *cases, Default *def);
     virtual const char *GetPrintNameForNode() { return "SwitchStmt"; }
+//    void Check(vector< map<Node *, Node *> > * vector);
     void PrintChildren(int indentLevel);
 };
 
@@ -193,6 +205,7 @@ class SwitchStmtError : public SwitchStmt
   public:
     SwitchStmtError(const char * msg) { yyerror(msg); }
     const char *GetPrintNameForNode() { return "SwitchStmtError"; }
+//    void Check(vector< map<Node *, Node *> > * vector);
 };
 
 #endif

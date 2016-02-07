@@ -33,6 +33,7 @@ class Type : public Node
     Type(const char *str);
     
     const char *GetPrintNameForNode() { return "Type"; }
+//    void Check(vector< map<Node *, Node *> > * vector);
     void PrintChildren(int indentLevel);
 
     virtual void PrintToStream(ostream& out) { out << typeName; }
@@ -49,6 +50,7 @@ class NamedType : public Type
     NamedType(Identifier *i);
     
     const char *GetPrintNameForNode() { return "NamedType"; }
+//    void Check(vector< map<Node *, Node *> > * vector);
     void PrintChildren(int indentLevel);
     void PrintToStream(ostream& out) { out << id; }
 };
@@ -62,6 +64,7 @@ class ArrayType : public Type
     ArrayType(yyltype loc, Type *elemType);
     
     const char *GetPrintNameForNode() { return "ArrayType"; }
+//    void Check(vector< map<Node *, Node *> > * vector);
     void PrintChildren(int indentLevel);
     void PrintToStream(ostream& out) { out << elemType << "[]"; }
 };

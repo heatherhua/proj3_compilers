@@ -15,6 +15,8 @@
 
 #include "ast.h"
 #include "list.h"
+#include <vector> 
+#include <map> 
 
 class Type;
 class NamedType;
@@ -29,7 +31,7 @@ class Decl : public Node
     Identifier *id;
   
   public:
-    Decl() : id(NULL) {}
+    Decl();
     Decl(Identifier *name);
     Identifier * getIdentifier();
     friend ostream& operator<<(ostream& out, Decl *d) { return out << d->id; }
@@ -45,6 +47,7 @@ class VarDecl : public Decl
     VarDecl(Identifier *name, Type *type);
     const char *GetPrintNameForNode() { return "VarDecl"; }
     void PrintChildren(int indentLevel);
+    void Check(vector< map<Node *, Node *> > * vector);
 };
 
 class VarDeclError : public VarDecl
@@ -52,6 +55,7 @@ class VarDeclError : public VarDecl
   public:
     VarDeclError() : VarDecl() { yyerror(this->GetPrintNameForNode()); };
     const char *GetPrintNameForNode() { return "VarDeclError"; }
+    void Check(vector< map<Node *, Node *> > * vector);
 };
 
 class FnDecl : public Decl 
@@ -65,6 +69,7 @@ class FnDecl : public Decl
     FnDecl() : Decl(), formals(NULL), returnType(NULL), body(NULL) {}
     FnDecl(Identifier *name, Type *returnType, List<VarDecl*> *formals);
     void SetFunctionBody(Stmt *b);
+    void Check(vector< map<Node *, Node *> > * vector);
     const char *GetPrintNameForNode() { return "FnDecl"; }
     void PrintChildren(int indentLevel);
 };
@@ -74,6 +79,7 @@ class FormalsError : public FnDecl
   public:
     FormalsError() : FnDecl() { yyerror(this->GetPrintNameForNode()); }
     const char *GetPrintNameForNode() { return "FormalsError"; }
+    void Check(vector< map<Node *, Node *> > * vector);
 };
 
 #endif

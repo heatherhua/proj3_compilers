@@ -28,30 +28,30 @@ void Program::Check() {
      *      checking itself, which makes for a great use of inheritance
      *      and polymorphism in the node classes.
      */
-
-    // sample test - not the actual working code
-    // replace it with your own implementation
     
     //Declare vector for scopes
+    vector< map<Node *, Node *> > scopesVector;
     //Declare Program scope
-    vector< map<Identifier *, Node *> > scopesVector;
-    std::map<Identifier *, Node *> globalScope;
+    std::map<Node *, Node *> globalScope;
     scopesVector.push_back(globalScope);
-    std::map<Identifier *, Node *>::iterator it = globalScope.begin();
+    
+    //Iterator to step through program's children
+    std::map<Node *, Node *>::iterator it = globalScope.begin();
     
     for(int i = 0; i < decls->NumElements(); i++){
-        //Add Decls into scope aka map
+        //Add Decls into globalScope
         Decl *curr = decls->Nth(i);
-        globalScope.insert( std::pair<Identifier *, Node *>(curr->getIdentifier(), curr) );
-        
-        // Check curr Decl to for left child. In order traversal
-        //TODO
+        globalScope.insert( std::pair<Node *, Node *>(curr->getIdentifier(), curr) );
         
         it++;
         std::cout << "Identifier: ";
         it->first->PrintChildren(0);
-        
-        std::cout << "Number of items in program scope: " << globalScope.size() << "\n";
+	std::cout << "\n";
+	printf("Type of Decl: %s", it->second->GetPrintNameForNode());
+
+	// Check curr Decl to for left child. In order traversal
+        //TODO
+	it->second->Check( &scopesVector );
         std::cout << "\n\n";
     }
     
