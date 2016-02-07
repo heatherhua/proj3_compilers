@@ -50,11 +50,11 @@ void Program::Check() {
         it++;
         std::cout << "Identifier: ";
         it->first->PrintChildren(0);
-        std::cout << "\n\n";
         
-//        it++;
         std::cout << "Number of items in program scope: " << globalScope.size() << "\n";
+        std::cout << "\n\n";
     }
+    
     
 //    if ( decls->NumElements() >= 2 ) {
         // Check that decl's dont conflict, loop through all
