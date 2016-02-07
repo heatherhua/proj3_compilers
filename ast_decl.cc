@@ -49,6 +49,23 @@ FnDecl::FnDecl(Identifier *n, Type *r, List<VarDecl*> *d) : Decl(n) {
 
 void FnDecl::Check(vector< map<Node *, Node *> > * vector){
     printf("Checking function decl. \n");
+    std::map<Node *, Node *> functionScope;
+    vector->push_back(functionScope);
+    
+//    List<VarDecl*> *formals;
+//    Type *returnType;
+//    Stmt *body;
+    std::cout << "Number of scopes: " << vector->size() << "\n";
+    
+    //Add formal parameters to scope
+    for(int i = 0; i < formals->NumElements(); i++) {
+	VarDecl *curr = formals->Nth(i);
+	functionScope[curr->getIdentifier()] = curr;
+    }
+    
+    std::cout << "Number of entries in map: " 
+	    << functionScope.size() << "\n";
+    
 }
 
 void FnDecl::SetFunctionBody(Stmt *b) { 

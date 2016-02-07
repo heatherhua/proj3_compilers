@@ -50,7 +50,6 @@ void Program::Check() {
 	printf("Type of Decl: %s", it->second->GetPrintNameForNode());
 
 	// Check curr Decl to for left child. In order traversal
-        //TODO
 	it->second->Check( &scopesVector );
         std::cout << "\n\n";
     }
