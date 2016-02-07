@@ -35,14 +35,14 @@ void Program::Check() {
     //Declare vector for scopes
     //Declare Program scope
     vector< map<Identifier *, Node *> > scopesVector;
-    std::map<Identifier *, Node *> programScope;
-    scopesVector.push_back(programScope);
-    std::map<Identifier *, Node *>::iterator it = programScope.begin();
+    std::map<Identifier *, Node *> globalScope;
+    scopesVector.push_back(globalScope);
+    std::map<Identifier *, Node *>::iterator it = globalScope.begin();
     
     for(int i = 0; i < decls->NumElements(); i++){
         //Add Decls into scope aka map
         Decl *curr = decls->Nth(i);
-        programScope.insert( std::pair<Identifier *, Node *>(curr->getIdentifier(), curr) );
+        globalScope.insert( std::pair<Identifier *, Node *>(curr->getIdentifier(), curr) );
         
         // Check curr Decl to for left child. In order traversal
         //TODO
@@ -53,7 +53,7 @@ void Program::Check() {
         std::cout << "\n\n";
         
 //        it++;
-        std::cout << "Number of items in program scope: " << programScope.size() << "\n";
+        std::cout << "Number of items in program scope: " << globalScope.size() << "\n";
     }
     
 //    if ( decls->NumElements() >= 2 ) {
