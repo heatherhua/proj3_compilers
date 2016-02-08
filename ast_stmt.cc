@@ -5,6 +5,7 @@
 #include "ast_stmt.h"
 #include "ast_type.h"
 #include "ast_decl.h"
+#include "utility.h"
 #include "ast_expr.h"
 #include "errors.h"
 #include <map>
@@ -76,9 +77,35 @@ void StmtBlock::PrintChildren(int indentLevel) {
     stmts->PrintAll(indentLevel+1);
 }
 
+void StmtBlock::Check( vector< map<Node *, Node *> > * vector) {
+    // Remember parser actually only appends to stmt list. 
+    // VarDecl is reported as DeclStmt
+    std::map<Node *, Node *> functionBodyScope;
+    
+    printf("checking stmtblock w/ %d elements\n",stmts->NumElements());
+    for(int i = 0; i < stmts->NumElements(); i++){
+	Stmt *curr = stmts->Nth(i);
+	//If curr is a VarDecl, store it
+	//If curr is Stmt... do something else
+	curr->Check(vector);
+	// Get last scope in vector and add to that one
+    }
+    vector->push_back(functionBodyScope);
+    
+    std::cout << "Number of scopes: " << vector->size() << "\n";
+
+}
+
 DeclStmt::DeclStmt(Decl *d) {
     Assert(d != NULL);
     (decl=d)->SetParent(this);
+}
+
+void DeclStmt::Check(vector< map<Node *, Node *> > * vector) {
+    printf("DeclStmt checking\n");
+    //Get last added scope in vector...and add decl to that one.
+    
+//    scope[decl->getIdentifier()] = decl;
 }
 
 void DeclStmt::PrintChildren(int indentLevel) {

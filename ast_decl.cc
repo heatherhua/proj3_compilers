@@ -5,6 +5,7 @@
 #include "ast_decl.h"
 #include "ast_type.h"
 #include "ast_stmt.h"
+#include "utility.h"
 #include <vector> 
 #include <map> 
 
@@ -29,6 +30,8 @@ VarDecl::VarDecl(Identifier *n, Type *t) : Decl(n) {
 }
   
 void VarDecl::Check(vector< map<Node *, Node *> > * vector){
+    //TODO Do not need to create scope. 
+    // Needs to check vector scopes for decl conflicts
     
 }
 
@@ -52,9 +55,6 @@ void FnDecl::Check(vector< map<Node *, Node *> > * vector){
     std::map<Node *, Node *> functionScope;
     vector->push_back(functionScope);
     
-//    List<VarDecl*> *formals;
-//    Type *returnType;
-//    Stmt *body;
     std::cout << "Number of scopes: " << vector->size() << "\n";
     
     //Add formal parameters to scope
@@ -63,8 +63,14 @@ void FnDecl::Check(vector< map<Node *, Node *> > * vector){
 	functionScope[curr->getIdentifier()] = curr;
     }
     
-    std::cout << "Number of entries in map: " 
+    std::cout << "Number of entries in function scope: " 
 	    << functionScope.size() << "\n";
+    
+    //Check Body
+    if(body){	
+	body->Check(vector);
+	printf("Body is %s \n", body->GetPrintNameForNode());
+    }
     
 }
 

@@ -8,6 +8,8 @@
 #include <stdarg.h>
 #include <string.h>
 #include <vector>
+#include <map>
+
 using std::vector;
 
 static vector<const char*> debugKeys;
@@ -73,4 +75,5 @@ void ParseCommandLine(int argc, char *argv[]) {
   for (int i = 2; i < argc; i++)
     SetDebugForKey(argv[i], true);
 }
+
 
