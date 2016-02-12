@@ -42,17 +42,22 @@ VarDecl::VarDecl(Identifier *n, Type *t) : Decl(n) {
   
 void VarDecl::Check(){
     std::cout << "VarDecl checking..." << "\n";
-
+    bool error = false;
+    
     for(int i = symbolTableVector->NumElements()-1; i >= 0; i--){ 
         char *symbol = this->getIdentifier()->getName();
         if(symbolTableVector->Nth(i)->contains(symbol) == 1){
 //            printf("ERROR decl already exists \n");
             Decl *decl = dynamic_cast<Decl*>(symbolTableVector->Nth(i)->lookup(symbol));
-            ReportError::DeclConflict(this, decl);
-           
+            ReportError::DeclConflict(this, decl);           
             symbolTableVector->Nth(i)->update(symbol, this);
+            error = true;
+            break;
         } 
     }
+    
+    // No error
+    symbolTableVector->Last()->insert(this->getIdentifier()->getName(), this);
 }
 
 void VarDecl::PrintChildren(int indentLevel) { 

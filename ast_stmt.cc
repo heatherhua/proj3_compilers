@@ -36,7 +36,9 @@ void Program::Check() {
     for(int i = 0; i < decls->NumElements(); i++){
         //Add Decls into global scope
         Decl *curr = decls->Nth(i);
-        global->insert(curr->getIdentifier()->getName(), curr);
+        
+        curr->Check();
+//        global->insert(curr->getIdentifier()->getName(), curr);
     
         std::cout << "Identifier: ";
         curr->getIdentifier()->PrintChildren(0);
@@ -46,7 +48,6 @@ void Program::Check() {
         std::cout << "\n";
 	printf("Size of vector: %d\n\n", symbolTableVector->NumElements());
 	// Check curr Decl to for left child. In order traversal
-	curr->Check();
     }
     
     printf("Size of vector: %d\n\n", symbolTableVector->NumElements());
