@@ -9,7 +9,9 @@
 #include "ast_expr.h"
 #include "errors.h"
 #include "ast.h"
-#include "ast_scope.h"
+
+
+extern List<SymbolTable *> *symbolTableVector;
 
 Program::Program(List<Decl*> *d) {
     Assert(d != NULL);
@@ -31,14 +33,8 @@ void Program::Check() {
      */
 //    List<SymbolTable *> *symbolTableVector = new List<SymbolTable*>;
     SymbolTable *global = new SymbolTable();
-    global->push(symbolTableVector);
-    
-//    globalSymbolTable = new SymbolTable();
-    //Declare vector for scopes
-//    vector< map<Node *, Node *> > scopesVector;
-    //Declare Program scope
-//    std::map<Node *, Node *> globalScope;
-//    scopesVector.push_back(globalScope);
+    symbolTableVector->Append(global);
+
     
     //Iterator to step through program's children
 //    std::map<Node *, Node *>::iterator it = globalScope.begin();

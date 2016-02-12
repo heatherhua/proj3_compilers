@@ -15,6 +15,7 @@
 
 #include "list.h"
 #include "ast.h"
+#include "ast_scope.h"
 
 class Decl;
 class VarDecl;
@@ -22,6 +23,8 @@ class Expr;
 class IntConstant;
   
 void yyerror(const char *msg);
+
+List<SymbolTable *> *symbolTableVector = new List<SymbolTable*>;
 
 class Program : public Node
 { 

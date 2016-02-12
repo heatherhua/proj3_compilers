@@ -20,6 +20,7 @@
 #include <vector>
 using namespace std;
 
+
 //struct info {
 //    Type *type;
 //};
@@ -27,19 +28,16 @@ using namespace std;
 class SymbolTable
 {
     protected:
-        map<char*, Node *> table;
+        map<Identifier*, Node *> table;
        
     public:
         SymbolTable() {}
         
-        void insert(char* symbol, Node* info) {
-            table.insert(std::pair<char*, Node*>(symbol, info));
+        void insert(Identifier* symbol, Node* info) {
+            table.insert(std::pair<Identifier*, Node*>(symbol, info));
         }
-        void push(List<SymbolTable *> *list){list->Append(this);}  // push self onto vector 
+
 };
-
-extern List<SymbolTable *> *symbolTableVector = new List<SymbolTable*>;
-
 
 #endif 
 
