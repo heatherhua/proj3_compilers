@@ -78,6 +78,19 @@ FnDecl::FnDecl(Identifier *n, Type *r, List<VarDecl*> *d) : Decl(n) {
 
 void FnDecl::Check(){
     printf("Checking function decl. \n");
+    // Push new scope onto stack
+    SymbolTable *newScope = new SymbolTable();
+    symbolTableVector->Append(newScope);
+
+    // Check and add formals
+    for(int i = 0; i < formals->NumElements(); i++) {
+        VarDecl *curr = formals->Nth(i);
+        curr->Check();
+    }
+    // insert formals into new scope
+
+    // check each stmt in stmtblock
+
 //    std::map<Node *, Node *> functionScope;
 //    vector->push_back(functionScope);
 //    
