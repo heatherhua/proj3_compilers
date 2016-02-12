@@ -46,6 +46,9 @@ void VarDecl::Check(){
     
     for(int i = symbolTableVector->NumElements()-1; i >= 0; i--){ 
         char *symbol = this->getIdentifier()->getName();
+        printf("symbol, %s\n", symbol);
+        printf("symbolTableVector->contains() %d\n", 
+            symbolTableVector->Nth(i)->contains(symbol) == 1 );
         if(symbolTableVector->Nth(i)->contains(symbol) == 1){
 //            printf("ERROR decl already exists \n");
             Decl *decl = dynamic_cast<Decl*>(symbolTableVector->Nth(i)->lookup(symbol));
