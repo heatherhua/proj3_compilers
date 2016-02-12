@@ -20,8 +20,6 @@
 #include <vector>
 using namespace std;
 
-extern List<SymbolTable *> *symbolTableVector;
-
 //struct info {
 //    Type *type;
 //};
@@ -40,6 +38,7 @@ class SymbolTable
         void push(){ printf("hey"); }//{symbolTableVector->Append(this);}  // push self onto vector 
 };
 
+extern List<SymbolTable *> *symbolTableVector;
 
 
 #endif 
