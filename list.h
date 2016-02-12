@@ -53,7 +53,11 @@ template<class Element> class List {
 	{ Assert(index >= 0 && index < NumElements());
 	  return elems[index]; }
 
-          // Inserts element at index, shuffling over others
+    // Return last element
+    Element Last() const
+        { return elems[NumElements()-1]; }
+
+    // Inserts element at index, shuffling over others
           // Raises assert if index out of range
     void InsertAt(const Element &elem, int index)
 	{ Assert(index >= 0 && index <= NumElements());
@@ -63,6 +67,7 @@ template<class Element> class List {
     void Append(const Element &elem)
 	{ elems.push_back(elem); }
 
+    
          // Removes element at index, shuffling down others
          // Raises assert if index out of range
     void RemoveAt(int index)
@@ -80,6 +85,8 @@ template<class Element> class List {
     void PrintAll(int indentLevel, const char *label = NULL)
         { for (int i = 0; i < NumElements(); i++)
              Nth(i)->Print(indentLevel, label); }
+    
+    
              
 
 };

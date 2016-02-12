@@ -6,6 +6,7 @@
 #include "ast_type.h"
 #include "ast_stmt.h"
 #include "utility.h"
+#include <string.h>
 #include <vector> 
 #include <map> 
 
@@ -18,8 +19,14 @@ Decl::Decl(Identifier *n) : Node(*n->GetLocation()) {
     (id=n)->SetParent(this); 
 }
 
-void Decl::Check(){
+void Decl::Check(){    
+    std::cout << "Decl checking..." << "\n";
     
+    if(strcmp(this->GetPrintNameForNode(), "VarDecl") == 0){
+        dynamic_cast<VarDecl*>(this)->Check();
+    } else if (strcmp(this->GetPrintNameForNode(), "FnDecl") == 0) {
+        dynamic_cast<FnDecl*>(this)->Check();
+    }
 }
 
 Identifier* Decl::getIdentifier() {
@@ -33,9 +40,13 @@ VarDecl::VarDecl(Identifier *n, Type *t) : Decl(n) {
 }
   
 void VarDecl::Check(){
-    //TODO Do not need to create scope. 
-    // Needs to check vector scopes for decl conflicts
-    
+    std::cout << "VarDecl checking..." << "\n";
+
+    for(int i = symbolTableVector->NumElements()-1; i >= 0; i--){ 
+        if(symbolTableVector->Nth(i)->contains(this->getIdentifier()->getName()) == 1){
+            printf("ERROR decl already exists \n");
+        } 
+    }
 }
 
 void VarDecl::PrintChildren(int indentLevel) { 
@@ -49,8 +60,6 @@ FnDecl::FnDecl(Identifier *n, Type *r, List<VarDecl*> *d) : Decl(n) {
     (returnType=r)->SetParent(this);
     (formals=d)->SetParentAll(this);
     body = NULL;
-
-	    
 }
 
 void FnDecl::Check(){

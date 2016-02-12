@@ -1,5 +1,5 @@
 int x;
-
+float x;
 void main (int x) {
 
     int y;

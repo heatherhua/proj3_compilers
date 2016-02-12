@@ -46,7 +46,7 @@ void Program::Check() {
         std::cout << "\n";
 	printf("Size of vector: %d\n\n", symbolTableVector->NumElements());
 	// Check curr Decl to for left child. In order traversal
-//	curr->Check();
+	curr->Check();
     }
     
     printf("Size of vector: %d\n\n", symbolTableVector->NumElements());

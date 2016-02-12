@@ -34,6 +34,10 @@ class SymbolTable
         Node* lookup(char* id){
             return table.at(id);
         }
+        
+        int contains(char* id){
+            return table.count(id);
+        }
 };
 
 #endif 
