@@ -11,8 +11,6 @@
 #include "ast.h"
 
 
-extern List<SymbolTable *> *symbolTableVector;
-
 Program::Program(List<Decl*> *d) {
     Assert(d != NULL);
     (decls=d)->SetParentAll(this);
@@ -40,19 +38,15 @@ void Program::Check() {
         Decl *curr = decls->Nth(i);
         global->insert(curr->getIdentifier()->getName(), curr);
     
-    printf("Looking up inside map: %s \n", 
-	    global->lookup(curr->getIdentifier()->getName())->GetPrintNameForNode());
-
         std::cout << "Identifier: ";
         curr->getIdentifier()->PrintChildren(0);
         std::cout << "\n\n";
 
 	printf("Type of Decl: %s", curr->GetPrintNameForNode());
-        std::cout << "\n\n";
-       
+        std::cout << "\n";
+	printf("Size of vector: %d\n\n", symbolTableVector->NumElements());
 	// Check curr Decl to for left child. In order traversal
-//	it->second->Check( &scopesVector );
-//        std::cout << "\n\n";
+//	curr->Check();
     }
     
     printf("Size of vector: %d\n\n", symbolTableVector->NumElements());
@@ -82,23 +76,23 @@ void StmtBlock::PrintChildren(int indentLevel) {
     stmts->PrintAll(indentLevel+1);
 }
 
-void StmtBlock::Check( vector< map<Node *, Node *> > * vector) {
+void StmtBlock::Check() {
     // Remember parser actually only appends to stmt list. 
     // VarDecl is reported as DeclStmt
-    std::map<Node *, Node *> functionBodyScope;
-    vector->push_back(functionBodyScope);
-    // Pointer??
-    
-    printf("checking stmtblock w/ %d elements\n",stmts->NumElements());
-    for(int i = 0; i < stmts->NumElements(); i++){
-	Stmt *curr = stmts->Nth(i);
-	//If curr is a VarDecl, store it
-	//If curr is Stmt... do something else
-	curr->Check(vector);
-	// Get last scope in vector and add to that one
-    }
-    
-    std::cout << "Number of scopes: " << vector->size() << "\n";
+//    std::map<Node *, Node *> functionBodyScope;
+//    vector->push_back(functionBodyScope);
+//    // Pointer??
+//    
+//    printf("checking stmtblock w/ %d elements\n",stmts->NumElements());
+//    for(int i = 0; i < stmts->NumElements(); i++){
+//	Stmt *curr = stmts->Nth(i);
+//	//If curr is a VarDecl, store it
+//	//If curr is Stmt... do something else
+//	curr->Check(vector);
+//	// Get last scope in vector and add to that one
+//    }
+//    
+//    std::cout << "Number of scopes: " << vector->size() << "\n";
 
 }
 
@@ -107,11 +101,11 @@ DeclStmt::DeclStmt(Decl *d) {
     (decl=d)->SetParent(this);
 }
 
-void DeclStmt::Check(vector< map<Node *, Node *> > * vector) {
+void DeclStmt::Check() {
     printf("DeclStmt checking\n");
-    //Get last added scope in vector...and add decl to that one.
-    map<Node *, Node *> scope = vector->back();
-    scope[decl->getIdentifier()] = decl;
+//    //Get last added scope in vector...and add decl to that one.
+//    map<Node *, Node *> scope = vector->back();
+//    scope[decl->getIdentifier()] = decl;
 }
 
 void DeclStmt::PrintChildren(int indentLevel) {

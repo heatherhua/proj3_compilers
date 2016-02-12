@@ -18,6 +18,10 @@ Decl::Decl(Identifier *n) : Node(*n->GetLocation()) {
     (id=n)->SetParent(this); 
 }
 
+void Decl::Check(){
+    
+}
+
 Identifier* Decl::getIdentifier() {
     return id;
 }
@@ -28,7 +32,7 @@ VarDecl::VarDecl(Identifier *n, Type *t) : Decl(n) {
     (type=t)->SetParent(this);
 }
   
-void VarDecl::Check(vector< map<Node *, Node *> > * vector){
+void VarDecl::Check(){
     //TODO Do not need to create scope. 
     // Needs to check vector scopes for decl conflicts
     
@@ -49,27 +53,27 @@ FnDecl::FnDecl(Identifier *n, Type *r, List<VarDecl*> *d) : Decl(n) {
 	    
 }
 
-void FnDecl::Check(vector< map<Node *, Node *> > * vector){
+void FnDecl::Check(){
     printf("Checking function decl. \n");
-    std::map<Node *, Node *> functionScope;
-    vector->push_back(functionScope);
-    
-    std::cout << "Number of scopes: " << vector->size() << "\n";
-    
-    //Add formal parameters to scope
-    for(int i = 0; i < formals->NumElements(); i++) {
-	VarDecl *curr = formals->Nth(i);
-	functionScope[curr->getIdentifier()] = curr;
-    }
-    
-    std::cout << "Number of entries in function scope: " 
-	    << functionScope.size() << "\n";
-    
-    //Check Body
-    if(body){	
-	body->Check(vector);
-	printf("Body is %s \n", body->GetPrintNameForNode());
-    }
+//    std::map<Node *, Node *> functionScope;
+//    vector->push_back(functionScope);
+//    
+//    std::cout << "Number of scopes: " << vector->size() << "\n";
+//    
+//    //Add formal parameters to scope
+//    for(int i = 0; i < formals->NumElements(); i++) {
+//	VarDecl *curr = formals->Nth(i);
+//	functionScope[curr->getIdentifier()] = curr;
+//    }
+//    
+//    std::cout << "Number of entries in function scope: " 
+//	    << functionScope.size() << "\n";
+//    
+//    //Check Body
+//    if(body){	
+//	body->Check(vector);
+//	printf("Body is %s \n", body->GetPrintNameForNode());
+//    }
     
 }
 

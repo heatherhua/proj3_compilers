@@ -15,12 +15,10 @@
 #define _H_ast_scope
 
 #include "list.h"
-#include "ast.h"
 #include <map>
 #include <vector>
 
 using namespace std;
-
 
 class SymbolTable
 {

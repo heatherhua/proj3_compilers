@@ -24,8 +24,6 @@ class IntConstant;
   
 void yyerror(const char *msg);
 
-List<SymbolTable *> *symbolTableVector = new List<SymbolTable*>;
-
 class Program : public Node
 { 
     protected:
@@ -43,7 +41,7 @@ class Stmt : public Node
   public:
      Stmt() : Node() {}
      Stmt(yyltype loc) : Node(loc) {}
-     
+     void Check();
 };
 
 class StmtBlock : public Stmt 
@@ -57,7 +55,7 @@ class StmtBlock : public Stmt
     const char *GetPrintNameForNode() { return "StmtBlock"; }
 //    List<VarDecl *> *getVarDecls() { return decls; }
 //    List<Stmt *> *getStmts() { return stmts; }
-    void Check(vector< map<Node *, Node *> > * vector);
+    void Check();
     void PrintChildren(int indentLevel);
 };
 
@@ -71,7 +69,7 @@ class DeclStmt: public Stmt
     const char *GetPrintNameForNode() { return "DeclStmt"; }
     
     // add decl to scope (pass in scope)
-    void Check(vector< map<Node *, Node *> > * vector);
+    void Check();
     
     void PrintChildren(int indentLevel);
 };

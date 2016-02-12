@@ -39,11 +39,14 @@
 
 #include <stdlib.h>   // for NULL
 #include "location.h"
+#include "ast_scope.h"
 #include <iostream>
 #include <vector>
 #include <map>
 
 using namespace std;
+
+extern List<SymbolTable *> *symbolTableVector;
 
 class Node  {
   protected:
@@ -60,7 +63,7 @@ class Node  {
     Node *GetParent()        { return parent; }
 
     virtual const char *GetPrintNameForNode() = 0;
-    virtual void Check(vector< map<Node *, Node *> > * vector) {};
+//    virtual void Check(vector< map<Node *, Node *> > * vector) {};
     // Print() is deliberately _not_ virtual
     // subclasses should override PrintChildren() instead
     void Print(int indentLevel, const char *label = NULL); 
