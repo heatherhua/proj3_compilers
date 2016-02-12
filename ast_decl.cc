@@ -5,6 +5,7 @@
 #include "ast_decl.h"
 #include "ast_type.h"
 #include "ast_stmt.h"
+#include "errors.h"
 #include "utility.h"
 #include <string.h>
 #include <vector> 
@@ -43,8 +44,11 @@ void VarDecl::Check(){
     std::cout << "VarDecl checking..." << "\n";
 
     for(int i = symbolTableVector->NumElements()-1; i >= 0; i--){ 
-        if(symbolTableVector->Nth(i)->contains(this->getIdentifier()->getName()) == 1){
-            printf("ERROR decl already exists \n");
+        char *symbol = this->getIdentifier()->getName();
+        if(symbolTableVector->Nth(i)->contains(symbol) == 1){
+//            printf("ERROR decl already exists \n");
+            Decl *decl = dynamic_cast<Decl*>(symbolTableVector->Nth(i)->lookup(symbol));
+            ReportError::DeclConflict(this, decl);
         } 
     }
 }
