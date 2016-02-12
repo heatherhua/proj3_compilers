@@ -12,6 +12,7 @@
       <in>ast_expr.cc</in>
       <in>ast_expr.h</in>
       <in>ast_scope.cc</in>
+      <in>ast_scope.h</in>
       <in>ast_stmt.cc</in>
       <in>ast_stmt.h</in>
       <in>ast_type.cc</in>

@@ -18,25 +18,24 @@
 #include "ast.h"
 #include <map>
 #include <vector>
+
 using namespace std;
 
-
-//struct info {
-//    Type *type;
-//};
 
 class SymbolTable
 {
     protected:
-        map<Identifier*, Node *> table;
+        map<char *, Node *> table;
        
     public:
         SymbolTable() {}
         
-        void insert(Identifier* symbol, Node* info) {
-            table.insert(std::pair<Identifier*, Node*>(symbol, info));
+        void insert(char* symbol, Node* info) {
+            table.insert(std::pair<char*, Node*>(symbol, info));
         }
-
+        Node* lookup(char* id){
+            return table.at(id);
+        }
 };
 
 #endif 

@@ -31,29 +31,34 @@ void Program::Check() {
      *      checking itself, which makes for a great use of inheritance
      *      and polymorphism in the node classes.
      */
-//    List<SymbolTable *> *symbolTableVector = new List<SymbolTable*>;
+
     SymbolTable *global = new SymbolTable();
     symbolTableVector->Append(global);
-
     
-    //Iterator to step through program's children
-//    std::map<Node *, Node *>::iterator it = globalScope.begin();
+    for(int i = 0; i < decls->NumElements(); i++){
+        //Add Decls into global scope
+        Decl *curr = decls->Nth(i);
+        global->insert(curr->getIdentifier()->getName(), curr);
     
-//    for(int i = 0; i < decls->NumElements(); i++){
-        //Add Decls into globalScope
-//        Decl *curr = decls->Nth(i);
-//        globalScope.insert( std::pair<Node *, Node *>(curr->getIdentifier(), curr) );
-        
-//        it++;
-//        std::cout << "Identifier: ";
-//        it->first->PrintChildren(0);
-//	std::cout << "\n";
-//	printf("Type of Decl: %s", it->second->GetPrintNameForNode());
+    printf("Looking up inside map: %s \n", 
+	    global->lookup(curr->getIdentifier()->getName())->GetPrintNameForNode());
 
+        std::cout << "Identifier: ";
+        curr->getIdentifier()->PrintChildren(0);
+        std::cout << "\n\n";
+
+	printf("Type of Decl: %s", curr->GetPrintNameForNode());
+        std::cout << "\n\n";
+       
 	// Check curr Decl to for left child. In order traversal
 //	it->second->Check( &scopesVector );
 //        std::cout << "\n\n";
-//    }
+    }
+    
+    printf("Size of vector: %d\n\n", symbolTableVector->NumElements());
+    
+    //Iterator to step through program's children
+//    std::map<Node *, Node *>::iterator it = global.begin();
     
     
 //    if ( decls->NumElements() >= 2 ) {

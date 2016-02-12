@@ -77,6 +77,7 @@ class Identifier : public Node
     Identifier(yyltype loc, const char *name);
     const char *GetPrintNameForNode()   { return "Identifier"; }
     void PrintChildren(int indentLevel);
+    char* getName() { return name; }
     friend ostream& operator<<(ostream& out, Identifier *id) { return out << id->name; }
 };
 
