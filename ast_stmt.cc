@@ -35,16 +35,16 @@ void Program::Check() {
     
     for(int i = 0; i < decls->NumElements(); i++){
         //Add Decls into global scope
-        Decl *curr = decls->Nth(i);
-        
-        curr->Check();
+        //Decl *curr = decls->Nth(i);
+        decls->Nth(i)->Check();
+        //curr->Check();
 //        global->insert(curr->getIdentifier()->getName(), curr);
     
         std::cout << "Identifier: ";
-        curr->getIdentifier()->PrintChildren(0);
+        decls->Nth(i)->getIdentifier()->PrintChildren(0);
         std::cout << "\n\n";
 
-	printf("Type of Decl: %s", curr->GetPrintNameForNode());
+	printf("Type of Decl: %s", decls->Nth(i)->GetPrintNameForNode());
         std::cout << "\n";
 	printf("Size of vector: %d\n\n", symbolTableVector->NumElements());
 	// Check curr Decl to for left child. In order traversal
@@ -78,6 +78,7 @@ void StmtBlock::PrintChildren(int indentLevel) {
 }
 
 void StmtBlock::Check() {
+    printf("Checking stmtblock. \n");
     // Remember parser actually only appends to stmt list. 
     // VarDecl is reported as DeclStmt
 //    std::map<Node *, Node *> functionBodyScope;
@@ -103,7 +104,7 @@ DeclStmt::DeclStmt(Decl *d) {
 }
 
 void DeclStmt::Check() {
-    printf("DeclStmt checking\n");
+//    printf("DeclStmt checking\n");
 //    //Get last added scope in vector...and add decl to that one.
 //    map<Node *, Node *> scope = vector->back();
 //    scope[decl->getIdentifier()] = decl;

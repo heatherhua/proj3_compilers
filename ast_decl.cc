@@ -82,34 +82,23 @@ void FnDecl::Check(){
     SymbolTable *newScope = new SymbolTable();
     symbolTableVector->Append(newScope);
 
+    std::cout << "Number of scopes: " << symbolTableVector->NumElements() << "\n";
+
     // Check and add formals
     for(int i = 0; i < formals->NumElements(); i++) {
         VarDecl *curr = formals->Nth(i);
         curr->Check();
     }
-    // insert formals into new scope
 
-    // check each stmt in stmtblock
+    // Check function body
+    // there always is a function body
+    // body is always a StmtBlock
+    printf("Body is %s \n", body->GetPrintNameForNode());
+    dynamic_cast<StmtBlock*>(body)->Check();
 
-//    std::map<Node *, Node *> functionScope;
-//    vector->push_back(functionScope);
-//    
-//    std::cout << "Number of scopes: " << vector->size() << "\n";
-//    
-//    //Add formal parameters to scope
-//    for(int i = 0; i < formals->NumElements(); i++) {
-//	VarDecl *curr = formals->Nth(i);
-//	functionScope[curr->getIdentifier()] = curr;
-//    }
-//    
+
 //    std::cout << "Number of entries in function scope: " 
 //	    << functionScope.size() << "\n";
-//    
-//    //Check Body
-//    if(body){	
-//	body->Check(vector);
-//	printf("Body is %s \n", body->GetPrintNameForNode());
-//    }
     
 }
 
