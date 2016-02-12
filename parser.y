@@ -18,23 +18,9 @@
  */
 #include "scanner.h" // for yylex
 #include "parser.h"
-#include "errors.h"   
-    
+#include "errors.h"       
 
 void yyerror(const char *msg); // standard error-handling routine
-
-
-
-//std::vector< std::map <Identifier, Node*> > myVect;
-//Node *x = new VarDecl(new Identifier(yylloc, "yay"), Type::intType);
-
-//Identifier *id = new Identifier(yylloc, "work");
-//std::map <Identifier, Node *> m;
-
-//m.insert(std::pair<Identifier, Node*>(id, x));
-//std::map<Identifier, Node> m ;
-//myVect.push_back(m);
-
 
 %}
 

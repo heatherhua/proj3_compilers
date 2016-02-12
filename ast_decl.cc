@@ -11,8 +11,7 @@
 
 Decl::Decl() : id(NULL) {
 }
-
-        
+       
          
 Decl::Decl(Identifier *n) : Node(*n->GetLocation()) {
     Assert(n != NULL);

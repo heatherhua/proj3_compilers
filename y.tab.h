@@ -201,7 +201,7 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 55 "parser.y"
+#line 41 "parser.y"
 
     int integerConstant;
     bool boolConstant;

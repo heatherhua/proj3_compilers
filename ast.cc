@@ -8,7 +8,6 @@
 #include <string.h> // strdup
 #include <stdio.h>  // printf
 
-
 Node::Node(yyltype loc) {
     location = new yyltype(loc);
     parent = NULL;

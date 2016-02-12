@@ -8,8 +8,8 @@
 #include "utility.h"
 #include "ast_expr.h"
 #include "errors.h"
-#include <map>
-#include <vector> 
+#include "ast.h"
+#include "ast_scope.h"
 
 Program::Program(List<Decl*> *d) {
     Assert(d != NULL);
@@ -29,31 +29,35 @@ void Program::Check() {
      *      checking itself, which makes for a great use of inheritance
      *      and polymorphism in the node classes.
      */
+    List<SymbolTable *> *symbolTableVector = new List<SymbolTable*>;
+//    SymbolTable *global = new SymbolTable();
+//    global->push();
     
+//    globalSymbolTable = new SymbolTable();
     //Declare vector for scopes
-    vector< map<Node *, Node *> > scopesVector;
+//    vector< map<Node *, Node *> > scopesVector;
     //Declare Program scope
-    std::map<Node *, Node *> globalScope;
-    scopesVector.push_back(globalScope);
+//    std::map<Node *, Node *> globalScope;
+//    scopesVector.push_back(globalScope);
     
     //Iterator to step through program's children
-    std::map<Node *, Node *>::iterator it = globalScope.begin();
+//    std::map<Node *, Node *>::iterator it = globalScope.begin();
     
-    for(int i = 0; i < decls->NumElements(); i++){
+//    for(int i = 0; i < decls->NumElements(); i++){
         //Add Decls into globalScope
-        Decl *curr = decls->Nth(i);
-        globalScope.insert( std::pair<Node *, Node *>(curr->getIdentifier(), curr) );
+//        Decl *curr = decls->Nth(i);
+//        globalScope.insert( std::pair<Node *, Node *>(curr->getIdentifier(), curr) );
         
-        it++;
-        std::cout << "Identifier: ";
-        it->first->PrintChildren(0);
-	std::cout << "\n";
-	printf("Type of Decl: %s", it->second->GetPrintNameForNode());
+//        it++;
+//        std::cout << "Identifier: ";
+//        it->first->PrintChildren(0);
+//	std::cout << "\n";
+//	printf("Type of Decl: %s", it->second->GetPrintNameForNode());
 
 	// Check curr Decl to for left child. In order traversal
-	it->second->Check( &scopesVector );
-        std::cout << "\n\n";
-    }
+//	it->second->Check( &scopesVector );
+//        std::cout << "\n\n";
+//    }
     
     
 //    if ( decls->NumElements() >= 2 ) {
