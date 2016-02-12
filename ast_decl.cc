@@ -49,6 +49,8 @@ void VarDecl::Check(){
 //            printf("ERROR decl already exists \n");
             Decl *decl = dynamic_cast<Decl*>(symbolTableVector->Nth(i)->lookup(symbol));
             ReportError::DeclConflict(this, decl);
+           
+            symbolTableVector->Nth(i)->update(symbol, this);
         } 
     }
 }

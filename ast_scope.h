@@ -35,6 +35,12 @@ class SymbolTable
             return table.at(id);
         }
         
+        void update(char* symbol, Node* info) {
+            std::map<char*, Node*>::iterator it = table.find(symbol); 
+            if (it != table.end())
+                it->second = info;
+        }
+        
         int contains(char* id){
             return table.count(id);
         }
