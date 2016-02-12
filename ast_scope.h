@@ -35,10 +35,10 @@ class SymbolTable
         void insert(char* symbol, Node* info) {
             table.insert(std::pair<char*, Node*>(symbol, info));
         }
-        void push(){ printf("hey"); }//{symbolTableVector->Append(this);}  // push self onto vector 
+        void push(List<SymbolTable *> *list){list->Append(this);}  // push self onto vector 
 };
 
-extern List<SymbolTable *> *symbolTableVector;
+extern List<SymbolTable *> *symbolTableVector = new List<SymbolTable*>;
 
 
 #endif 

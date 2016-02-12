@@ -29,9 +29,9 @@ void Program::Check() {
      *      checking itself, which makes for a great use of inheritance
      *      and polymorphism in the node classes.
      */
-    List<SymbolTable *> *symbolTableVector = new List<SymbolTable*>;
-//    SymbolTable *global = new SymbolTable();
-//    global->push();
+//    List<SymbolTable *> *symbolTableVector = new List<SymbolTable*>;
+    SymbolTable *global = new SymbolTable();
+    global->push(symbolTableVector);
     
 //    globalSymbolTable = new SymbolTable();
     //Declare vector for scopes
