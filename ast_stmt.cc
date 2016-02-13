@@ -167,27 +167,20 @@ void WhileStmt::PrintChildren(int indentLevel) {
     body->Print(indentLevel+1, "(body) ");
 }
 
-void WhileStmt::Check(){/*
-        printf("Checking Forstmt. \n");
+void WhileStmt::Check(){
+        printf("Checking WhileStmt. \n");
         //make new symboltable
         SymbolTable *newScope = new SymbolTable();
         symbolTableVector->Append(newScope);
-        std::cout << "Making new scope in ForStmt " << 
+        std::cout << "Making new scope in WhileStmt " << 
             symbolTableVector->NumElements() << "\n";
-        
-        // verify and add in parameters
-        // vars from ForStmt
-        init->Check();
-        step->Check();
 
-        // verify and add in body
         // vars from ConditionalStmt
         test->Check();
         body->Check();
 
-        // pop
-        symbolTableVector->RemoveAt(symbolTableVector->NumElements()-1);
-*/
+        // pops in stmtblock
+
 }
 
 IfStmt::IfStmt(Expr *t, Stmt *tb, Stmt *eb): ConditionalStmt(t, tb) { 
