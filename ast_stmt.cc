@@ -93,7 +93,7 @@ void StmtBlock::Check() {
     	stmts->Nth(i)->Check();
     }
 
-
+    symbolTableVector->RemoveAt(symbolTableVector->NumElements()-1);
 
 
 //	//If curr is a VarDecl, store it
