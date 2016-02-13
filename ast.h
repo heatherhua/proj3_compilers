@@ -63,7 +63,7 @@ class Node  {
     Node *GetParent()        { return parent; }
 
     virtual const char *GetPrintNameForNode() = 0;
-    //virtual void Check() {}
+    virtual void Check() {}
     // Print() is deliberately _not_ virtual
     // subclasses should override PrintChildren() instead
     void Print(int indentLevel, const char *label = NULL); 

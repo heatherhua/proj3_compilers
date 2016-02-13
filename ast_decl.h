@@ -34,7 +34,7 @@ class Decl : public Node
     Decl();
     Decl(Identifier *name);
     Identifier * getIdentifier();
-    void Check();
+    virtual void Check(){}
     friend ostream& operator<<(ostream& out, Decl *d) { return out << d->id; }
 };
 

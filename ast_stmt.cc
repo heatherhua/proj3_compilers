@@ -81,13 +81,18 @@ void StmtBlock::Check() {
     printf("Checking stmtblock. \n");
     // Remember parser actually only appends to stmt list. 
     // VarDecl is reported as DeclStmt
-//    std::map<Node *, Node *> functionBodyScope;
-//    vector->push_back(functionBodyScope);
-//    // Pointer??
+
 //    
 //    printf("checking stmtblock w/ %d elements\n",stmts->NumElements());
-//    for(int i = 0; i < stmts->NumElements(); i++){
-//	Stmt *curr = stmts->Nth(i);
+    for(int i = 0; i < stmts->NumElements(); i++){
+        printf("stmt %d: %s\n", i, this->GetPrintNameForNode());
+    
+    	//stmts->Nth(i)->Check();
+    }
+
+
+
+
 //	//If curr is a VarDecl, store it
 //	//If curr is Stmt... do something else
 //	curr->Check(vector);

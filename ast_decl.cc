@@ -20,7 +20,7 @@ Decl::Decl(Identifier *n) : Node(*n->GetLocation()) {
     (id=n)->SetParent(this); 
 }
 
-void Decl::Check(){    
+/*void Decl::Check(){    
     std::cout << "Decl checking..." << "\n";
     
     if(strcmp(this->GetPrintNameForNode(), "VarDecl") == 0){
@@ -28,7 +28,7 @@ void Decl::Check(){
     } else if (strcmp(this->GetPrintNameForNode(), "FnDecl") == 0) {
         dynamic_cast<FnDecl*>(this)->Check();
     }
-}
+}*/
 
 Identifier* Decl::getIdentifier() {
     return id;
@@ -52,7 +52,9 @@ void VarDecl::Check(){
         if(symbolTableVector->Nth(i)->contains(symbol) == 1){
 //            printf("ERROR decl already exists \n");
             Decl *decl = dynamic_cast<Decl*>(symbolTableVector->Nth(i)->lookup(symbol));
+            
             ReportError::DeclConflict(this, decl);           
+            //ReportError::DeclConflict(this, symbolTableVector->Nth(i)->lookup(symbol));
             symbolTableVector->Nth(i)->update(symbol, this);
             error = true;
             break;
@@ -94,8 +96,8 @@ void FnDecl::Check(){
     // there always is a function body
     // body is always a StmtBlock
     printf("Body is %s \n", body->GetPrintNameForNode());
-    dynamic_cast<StmtBlock*>(body)->Check();
-
+    //dynamic_cast<StmtBlock*>(body)->Check();
+    body->Check();
 
 //    std::cout << "Number of entries in function scope: " 
 //	    << functionScope.size() << "\n";
