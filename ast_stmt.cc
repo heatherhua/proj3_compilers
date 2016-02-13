@@ -287,7 +287,6 @@ void SwitchLabel::Check(){
 void BreakStmt::Check(){
     printf("Checking BreakStmt. \n");
 
-
     bool found = false;
     Node * it = this;
     while(it->GetParent() != NULL){
@@ -305,51 +304,21 @@ void BreakStmt::Check(){
     if(found == false){
         ReportError::BreakOutsideLoop(this);
     }
-
-
-    // //create map iterator
-    // Map::iterator it;
-    // bool found = false;
-
-    // for(int i = symbolTableVector->NumElements()-1; i >= 0; i--){ 
-    //     // check if contains loopstatement
-    //     SymbolTable *currMap = symbolTableVector->Nth(i);
-    //     for(it = currMap->table.begin(); it != currMap->table.end(); ++it){
-    //         std::cout << "it first:" << it->first << "\n";
-    //         std::cout << "it second:" << it->first << "\n";
-    //         if((strcmp(it->second->GetPrintNameForNode(),"ForStmt")) == 0 ||
-    //             (strcmp(it->second->GetPrintNameForNode(),"WhileStmt")) == 0){
-    //             found = true;
-    //         }
-    //     }
-    // }
-
-    // if(found == false){
-    //     ReportError::BreakOutsideLoop(this);
-    // }
-    // else{
-    //     symbolTableVector->RemoveAt(symbolTableVector->NumElements()-1);
-    // }
-
-    // std::cout << "End breakstmt " << symbolTableVector->NumElements() << "\n";
 }
 
 void ContinueStmt::Check(){
     printf("Checking ContStmt. \n");
 
-    //create map iterator
-    Map::iterator it;
     bool found = false;
-
-    for(int i = symbolTableVector->NumElements()-1; i >= 0; i--){ 
-        // check if contains loopstatement
-        SymbolTable *currMap = symbolTableVector->Nth(i);
-        for(it = currMap->table.begin(); it != currMap->table.end(); ++it){
-            std::cout << "it first:" << it->first << "\n";
-            if((strcmp(it->second->GetPrintNameForNode(),"ForStmt")) == 0 ||
-                (strcmp(it->second->GetPrintNameForNode(),"WhileStmt")) == 0){
-                found = true;
-            }
+    Node * it = this;
+    while(it->GetParent() != NULL){
+        if((strcmp(it->GetParent()->GetPrintNameForNode(), "ForStmt" )) == 0 ||
+            (strcmp(it->GetParent()->GetPrintNameForNode(), "WhileStmt" )) == 0 ){
+            found = true;
+            break;
+        }
+        else{
+            it = it->GetParent();
         }
     }
 
