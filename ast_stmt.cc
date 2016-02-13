@@ -246,6 +246,11 @@ void SwitchLabel::Check(){
 
 }
 
+void BreakStmt::Check(){
+    printf("Checking BreakStmt. \n");
+    symbolTableVector->RemoveAt(symbolTableVector->NumElements()-1);
+}
+
 void SwitchStmt::Check(){
     // TODO: FIND OUT SCOPING!!! ***********************/
        // printf("Checking SwitchStmt. \n");
@@ -259,7 +264,7 @@ void SwitchStmt::Check(){
             cases->Nth(i)->Check();
         }
         // verify default
-        //printf("Value of SwitchSTmt:def: %s\n", def->GetPrintNameForNode());
+        //if(def) printf("Value of SwitchSTmt:def: %s\n", def->GetPrintNameForNode());
         if(def) def->Check();
 }
 

@@ -141,6 +141,7 @@ class BreakStmt : public Stmt
   public:
     BreakStmt(yyltype loc) : Stmt(loc) {}
     const char *GetPrintNameForNode() { return "BreakStmt"; }
+    void Check();
 //    void Check(vector< map<Node *, Node *> > * vector);
 };
 
