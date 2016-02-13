@@ -80,6 +80,13 @@ FnDecl::FnDecl(Identifier *n, Type *r, List<VarDecl*> *d) : Decl(n) {
 
 void FnDecl::Check(){
     printf("Checking function decl. \n");
+    // check function declaration
+    if(symbolTableVector->Last()->contains(this->getIdentifier()->getName())){
+        Decl *old = dynamic_cast<Decl*>(symbolTableVector->Last()->lookup(this->getIdentifier()->getName()));
+        ReportError::DeclConflict(this, old);
+    }
+    symbolTableVector->Last()->insert(this->getIdentifier()->getName(), this);
+
     // Push new scope onto stack
     SymbolTable *newScope = new SymbolTable();
     symbolTableVector->Append(newScope);
