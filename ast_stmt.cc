@@ -81,16 +81,19 @@ void StmtBlock::Check() {
     printf("Checking stmtblock. \n");
     // Remember parser actually only appends to stmt list. 
     // VarDecl is reported as DeclStmt
-
+    //std::cout << "Number of scopes: " << symbolTableVector->NumElements() << "\n";
 //    
 //    printf("checking stmtblock w/ %d elements\n",stmts->NumElements());
     for(int i = 0; i < stmts->NumElements(); i++){
         printf("stmt %d: %s\n", i, stmts->Nth(i)->GetPrintNameForNode());
-        if(strcmp(this->GetPrintNameForNode(), "StmtBlock") == 0){
+        if(strcmp(stmts->Nth(i)->GetPrintNameForNode(), "StmtBlock") == 0){
             SymbolTable *newScope = new SymbolTable();
             symbolTableVector->Append(newScope);
+            std::cout << "Making new scope in stmtblock " << symbolTableVector->NumElements() << "\n";
         }
+       // std::cout << "Number of scopes: " << symbolTableVector->NumElements() << "\n";
     	stmts->Nth(i)->Check();
+       // std::cout << "Number of scopes: " << symbolTableVector->NumElements() << "\n";
     }
 
     symbolTableVector->RemoveAt(symbolTableVector->NumElements()-1);
