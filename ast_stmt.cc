@@ -132,6 +132,21 @@ ConditionalStmt::ConditionalStmt(Expr *t, Stmt *b) {
     (body=b)->SetParent(this);
 }
 
+void ConditionalStmt::Check(){
+    printf("Checking ConditionalStmt. \n");
+    bool found = false;
+
+    if((strcmp(test->GetPrintNameForNode(),"ArithmeticExpr")) == 0 ||
+        (strcmp(test->GetPrintNameForNode(),"RelationalExpr")) == 0 ||
+        (strcmp(test->GetPrintNameForNode(),"AssignExpr")) == 0 ||
+        (strcmp(test->GetPrintNameForNode(),"BoolConstant")) == 0){
+        found = true;
+    }
+    if(found == false){
+        ReportError::TestNotBoolean(test);
+    }
+}
+
 ForStmt::ForStmt(Expr *i, Expr *t, Expr *s, Stmt *b): LoopStmt(t, b) { 
     Assert(i != NULL && t != NULL && b != NULL);
     (init=i)->SetParent(this);
@@ -177,20 +192,6 @@ void ForStmt::PrintChildren(int indentLevel) {
     body->Print(indentLevel+1, "(body) ");
 }
 
-void ConditionalStmt::Check(){
-    printf("Checking ConditionalStmt. \n");
-    bool found = false;
-
-    if((strcmp(test->GetPrintNameForNode(),"ArithmeticExpr")) == 0 ||
-        (strcmp(test->GetPrintNameForNode(),"RelationalExpr")) == 0 ||
-        (strcmp(test->GetPrintNameForNode(),"AssignExpr")) == 0 ||
-        (strcmp(test->GetPrintNameForNode(),"BoolConstant")) == 0){
-        found = true;
-    }
-    if(found == false){
-        ReportError::TestNotBoolean(test);
-    }
-}
 
 void WhileStmt::PrintChildren(int indentLevel) {
     test->Print(indentLevel+1, "(test) ");
@@ -207,7 +208,7 @@ void WhileStmt::Check(){
 
         // vars from ConditionalStmt
         test->Check();
-        body->Check();
+        ConditionalStmt::Check();
 
         // pop
         symbolTableVector->RemoveAt(symbolTableVector->NumElements()-1);
