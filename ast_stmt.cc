@@ -113,6 +113,25 @@ void DeclStmt::Check() {
 //    //Get last added scope in vector...and add decl to that one.
 //    map<Node *, Node *> scope = vector->back();
 //    scope[decl->getIdentifier()] = decl;
+
+    //just checking for errors in this scope
+    bool error = false;
+    char *symbol = decl->getIdentifier()->getName();
+    printf("symbol, %s\n", symbol);
+    printf("symbolTableVector->contains() %d\n", 
+        symbolTableVector->Last()->contains(symbol) == 1 );
+    if(symbolTableVector->Last()->contains(symbol) == 1){
+//            printf("ERROR decl already exists \n");
+        //Decl *o = dynamic_cast<Decl*>(symbolTableVector->Last()->lookup(symbol));
+        //printf("error value %s \n\n", o->GetPrintNameForNode()); 
+        ///ReportError::DeclConflict(decl, o);           
+        //symbolTableVector->Last()->update(symbol, this);
+        //error = true;
+        //return;
+    }
+    
+    // No error
+    symbolTableVector->Last()->insert(decl->getIdentifier()->getName(), this);
 }
 
 void DeclStmt::PrintChildren(int indentLevel) {
