@@ -34,36 +34,10 @@ void Program::Check() {
     symbolTableVector->Append(global);
     
     for(int i = 0; i < decls->NumElements(); i++){
-        //Add Decls into global scope
-        //Decl *curr = decls->Nth(i);
         decls->Nth(i)->Check();
-        //curr->Check();
-//        global->insert(curr->getIdentifier()->getName(), curr);
-    
-        std::cout << "Identifier: ";
-        decls->Nth(i)->getIdentifier()->PrintChildren(0);
-        std::cout << "\n\n";
-
-	printf("Type of Decl: %s", decls->Nth(i)->GetPrintNameForNode());
-        std::cout << "\n";
-	printf("Size of vector: %d\n\n", symbolTableVector->NumElements());
-	// Check curr Decl to for left child. In order traversal
     }
     
     printf("Size of vector: %d\n\n", symbolTableVector->NumElements());
-    
-    //Iterator to step through program's children
-//    std::map<Node *, Node *>::iterator it = global.begin();
-    
-    
-//    if ( decls->NumElements() >= 2 ) {
-        // Check that decl's dont conflict, loop through all
-//       Decl *newDecl  = decls->Nth(1);
-//       Decl *prevDecl = decls->Nth(0);
-//       ReportError::DeclConflict(newDecl, prevDecl);
-       
-       // Decl.check())
-//    }
 }
 
 StmtBlock::StmtBlock(List<VarDecl*> *d, List<Stmt*> *s) {
@@ -158,6 +132,28 @@ ForStmt::ForStmt(Expr *i, Expr *t, Expr *s, Stmt *b): LoopStmt(t, b) {
       (step=s)->SetParent(this);
 }
 
+void ForStmt::Check(){
+        printf("Checking Forstmt. \n");
+        //make new symboltable
+        SymbolTable *newScope = new SymbolTable();
+        symbolTableVector->Append(newScope);
+        std::cout << "Making new scope in ForStmt " << 
+            symbolTableVector->NumElements() << "\n";
+        
+        // verify and add in parameters
+        // vars from ForStmt
+        init->Check();
+        step->Check();
+
+        // verify and add in body
+        // vars from ConditionalStmt
+        test->Check();
+        body->Check();
+
+        // pops in stmtblock
+        //symbolTableVector->RemoveAt(symbolTableVector->NumElements()-1);
+}
+
 void ForStmt::PrintChildren(int indentLevel) {
     init->Print(indentLevel+1, "(init) ");
     test->Print(indentLevel+1, "(test) ");
@@ -169,6 +165,29 @@ void ForStmt::PrintChildren(int indentLevel) {
 void WhileStmt::PrintChildren(int indentLevel) {
     test->Print(indentLevel+1, "(test) ");
     body->Print(indentLevel+1, "(body) ");
+}
+
+void WhileStmt::Check(){/*
+        printf("Checking Forstmt. \n");
+        //make new symboltable
+        SymbolTable *newScope = new SymbolTable();
+        symbolTableVector->Append(newScope);
+        std::cout << "Making new scope in ForStmt " << 
+            symbolTableVector->NumElements() << "\n";
+        
+        // verify and add in parameters
+        // vars from ForStmt
+        init->Check();
+        step->Check();
+
+        // verify and add in body
+        // vars from ConditionalStmt
+        test->Check();
+        body->Check();
+
+        // pop
+        symbolTableVector->RemoveAt(symbolTableVector->NumElements()-1);
+*/
 }
 
 IfStmt::IfStmt(Expr *t, Stmt *tb, Stmt *eb): ConditionalStmt(t, tb) { 

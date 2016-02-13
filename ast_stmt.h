@@ -102,6 +102,7 @@ class ForStmt : public LoopStmt
     const char *GetPrintNameForNode() { return "ForStmt"; }
 //    void Check(vector< map<Node *, Node *> > * vector);
     void PrintChildren(int indentLevel);
+    void Check();
 };
 
 class WhileStmt : public LoopStmt 
@@ -111,6 +112,7 @@ class WhileStmt : public LoopStmt
     const char *GetPrintNameForNode() { return "WhileStmt"; }
 //    void Check(vector< map<Node *, Node *> > * vector);
     void PrintChildren(int indentLevel);
+    void Check();
 };
 
 class IfStmt : public ConditionalStmt 

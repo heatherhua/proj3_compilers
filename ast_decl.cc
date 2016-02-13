@@ -98,6 +98,7 @@ void FnDecl::Check(){
     printf("Body is %s \n", body->GetPrintNameForNode());
     //dynamic_cast<StmtBlock*>(body)->Check();
     body->Check();
+    //std::cout << "Number of scopes: " << symbolTableVector->NumElements() << "\n";
 
 //    std::cout << "Number of entries in function scope: " 
 //	    << functionScope.size() << "\n";
