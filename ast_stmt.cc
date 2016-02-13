@@ -90,10 +90,6 @@ DeclStmt::DeclStmt(Decl *d) {
 
 void DeclStmt::Check() {
     printf("DeclStmt checking\n");
-//    //Get last added scope in vector...and add decl to that one.
-//    map<Node *, Node *> scope = vector->back();
-//    scope[decl->getIdentifier()] = decl;
-
     //just checking for errors in this scope
     bool error = false;
     char *symbol = decl->getIdentifier()->getName();
@@ -102,18 +98,18 @@ void DeclStmt::Check() {
     Decl *o;
 
     if(symbolTableVector->Last()->contains(symbol) == 1){
-        if(strcmp(symbolTableVector->Last()->lookup(symbol)->GetPrintNameForNode(), "StmtBlock") == 0){
+        if(strcmp(symbolTableVector->Last()->lookup(symbol)->GetPrintNameForNode(), "DeclStmt") == 0){
         
     //      printf("ERROR decl already exists \n");
-            o = (dynamic_cast<DeclStmt*>(symbolTableVector->Last()->lookup(symbol))->decl);   
+            DeclStmt *p = dynamic_cast<DeclStmt*>(symbolTableVector->Last()->lookup(symbol));
+            o = p->decl;   
         }
         else{
             o = dynamic_cast<Decl*>(symbolTableVector->Last()->lookup(symbol));
         }
-        ReportError::DeclConflict(decl, o);           
+        ReportError::DeclConflict(this->decl, o);           
         symbolTableVector->Last()->update(symbol, this);
         error = true;
-        //if(symbolTableVector->Last()->lookup(symbol)) == )
     }
     
     // No error
