@@ -112,8 +112,9 @@ void FnDecl::Check(){
     }
 
         // checking return types
-    bool found = false;
+    bool found = true;
     if(returnType != Type::voidType){
+        found = false;
         StmtBlock *temp = dynamic_cast<StmtBlock*>(body);
         for(int i = 0; i < temp->stmts->NumElements(); i++){
             if(strcmp(temp->stmts->Nth(i)->GetPrintNameForNode(), "ReturnStmt") == 0){
