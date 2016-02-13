@@ -88,15 +88,23 @@ void FnDecl::Check(){
 
     // Check and add formals
     for(int i = 0; i < formals->NumElements(); i++) {
-        //VarDecl *curr = formals->Nth(i);
-        formals->Nth(i)->Check();
+        char *symbol = formals->Nth(i)->getIdentifier()->getName();
+        printf("symbol, %s\n", symbol);
+
+        if(symbolTableVector->Last()->contains(symbol) == 1){
+            Decl *decl = dynamic_cast<Decl*>(symbolTableVector->Nth(i)->lookup(symbol));
+            
+            ReportError::DeclConflict(this, decl);
+            // TODO: currently not handling cascading errors, do something about this
+        }
+        else {
+            symbolTableVector->Last()->insert(formals->Nth(i)->getIdentifier()->getName(),
+                 formals->Nth(i));
+        }
     }
 
-    // Check function body
-    // there always is a function body
-    // body is always a StmtBlock
-    printf("Body is %s \n", body->GetPrintNameForNode());
-    //dynamic_cast<StmtBlock*>(body)->Check();
+
+
     body->Check();
     //std::cout << "Number of scopes: " << symbolTableVector->NumElements() << "\n";
 
