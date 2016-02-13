@@ -156,18 +156,8 @@ void ForStmt::Check(){
     // verify and add in body
     // vars from ConditionalStmt
 
-    /* this is test->Check() */
-    bool found = false;
+    ConditionalStmt::Check();
 
-    if((strcmp(test->GetPrintNameForNode(),"ArithmeticExpr")) == 0 ||
-        (strcmp(test->GetPrintNameForNode(),"RelationalExpr")) == 0 ||
-        (strcmp(test->GetPrintNameForNode(),"AssignExpr")) == 0 ||
-        (strcmp(test->GetPrintNameForNode(),"BoolConstant")) == 0){
-        found = true;
-    }
-    if(found == false){
-        ReportError::TestNotBoolean(test);
-    }
 
     std::cout << "End breakstmt " << symbolTableVector->NumElements() << "\n";
 
@@ -185,6 +175,21 @@ void ForStmt::PrintChildren(int indentLevel) {
     if ( step )
       step->Print(indentLevel+1, "(step) ");
     body->Print(indentLevel+1, "(body) ");
+}
+
+void ConditionalStmt::Check(){
+    printf("Checking ConditionalStmt. \n");
+    bool found = false;
+
+    if((strcmp(test->GetPrintNameForNode(),"ArithmeticExpr")) == 0 ||
+        (strcmp(test->GetPrintNameForNode(),"RelationalExpr")) == 0 ||
+        (strcmp(test->GetPrintNameForNode(),"AssignExpr")) == 0 ||
+        (strcmp(test->GetPrintNameForNode(),"BoolConstant")) == 0){
+        found = true;
+    }
+    if(found == false){
+        ReportError::TestNotBoolean(test);
+    }
 }
 
 void WhileStmt::PrintChildren(int indentLevel) {
@@ -228,7 +233,7 @@ void IfStmt::Check(){
     //Stmt *body;
         printf("Checking Ifstmt. \n");
 
-        test->Check();
+        ConditionalStmt::Check();
         body->Check();
 
         if(elseBody) elseBody->Check();

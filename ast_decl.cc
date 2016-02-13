@@ -111,7 +111,7 @@ void FnDecl::Check(){
         }
     }
 
-        // checking return types
+    // checking if has return types 
     bool found = true;
     if(returnType != Type::voidType){
         found = false;
@@ -119,6 +119,8 @@ void FnDecl::Check(){
         for(int i = 0; i < temp->stmts->NumElements(); i++){
             if(strcmp(temp->stmts->Nth(i)->GetPrintNameForNode(), "ReturnStmt") == 0){
                 found = true;
+                ///checking if return type correct type
+                
             }
         }
     }
