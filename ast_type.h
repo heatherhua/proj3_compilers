@@ -14,6 +14,7 @@
 
 #include "ast.h"
 #include "list.h"
+#include <string>
 #include <iostream>
 
 using namespace std;
@@ -27,7 +28,7 @@ class Type : public Node
     static Type *intType, *floatType, *boolType, *voidType,
                 *vec2Type, *vec3Type, *vec4Type,
                 *mat2Type, *mat3Type, *mat4Type,
-                *errorType;
+                *errorType, *identifierType;
 
     Type(yyltype loc) : Node(loc) {}
     Type(const char *str);
@@ -39,6 +40,9 @@ class Type : public Node
     virtual void PrintToStream(ostream& out) { out << typeName; }
     friend ostream& operator<<(ostream& out, Type *t) { t->PrintToStream(out); return out; }
     virtual bool IsEquivalentTo(Type *other) { return this == other; }
+    char *GetTypeName(){ return typeName; }
+    Type *GetType(){ return this; }
+    bool Compare(Type* other);
 };
 
 class NamedType : public Type 

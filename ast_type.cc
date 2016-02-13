@@ -27,6 +27,10 @@ Type *Type::mat3Type   = new Type("mat3");
 Type *Type::mat4Type   = new Type("mat4");
 Type *Type::errorType  = new Type("error"); 
 
+// making this pseudo type because easier than
+// checking if type null for expr
+Type *Type::identifierType = new Type("identifier");
+
 Type::Type(const char *n) {
     Assert(n);
     typeName = strdup(n);
@@ -34,6 +38,15 @@ Type::Type(const char *n) {
 
 void Type::PrintChildren(int indentLevel) {
     printf("%s", typeName);
+}
+
+bool Type::Compare(Type * other){
+    //std::string t1(this->GetTypeName());
+    //std::string t2(other->GetTypeName());
+    if(strcmp(this->GetTypeName(),other->GetTypeName()) == 0){
+        return true;
+    }
+    return false;
 }
 
 	

@@ -249,6 +249,11 @@ void ReturnStmt::PrintChildren(int indentLevel) {
     if ( expr ) 
       expr->Print(indentLevel+1);
 }
+
+void ReturnStmt::Check(){
+    // check if valid expr
+    expr->Check();
+}
   
 SwitchLabel::SwitchLabel(Expr *l, Stmt *s) {
     Assert(l != NULL && s != NULL);
@@ -338,6 +343,8 @@ void SwitchStmt::Check(){
        // printf("Checking SwitchStmt. \n");
         // verify the expr
         printf("Value of SwitchSTmt:Expr: %s\n", expr->GetPrintNameForNode());
+        
+        // check if expr is correct type
         expr->Check();
 
         // verify all stmts in List<Stmt>

@@ -14,8 +14,10 @@
 #define _H_ast_expr
 
 #include "ast.h"
+#include "ast_type.h"
 #include "ast_stmt.h"
 #include "list.h"
+ #include "error.h"
 
 void yyerror(const char *msg);
 
@@ -28,12 +30,15 @@ class Expr : public Stmt
     friend std::ostream& operator<< (std::ostream& stream, Expr * expr) {
         return stream << expr->GetPrintNameForNode();
     }
+   virtual Type *GetType(){return Type::errorType; }
 };
 
 class ExprError : public Expr
 {
   public:
     ExprError() : Expr() { yyerror(this->GetPrintNameForNode()); }
+
+    // TODO: this might cause problems with inheritence
     const char *GetPrintNameForNode() { return "ExprError"; }
 };
 
@@ -44,6 +49,7 @@ class EmptyExpr : public Expr
 {
   public:
     const char *GetPrintNameForNode() { return "Empty"; }
+    Type *GetType(){ return Type::errorType; }
 };
 
 class IntConstant : public Expr 
@@ -55,6 +61,7 @@ class IntConstant : public Expr
     IntConstant(yyltype loc, int val);
     const char *GetPrintNameForNode() { return "IntConstant"; }
     void PrintChildren(int indentLevel);
+    Type *GetType(){ return Type::intType; }
 };
 
 class FloatConstant: public Expr 
@@ -66,6 +73,7 @@ class FloatConstant: public Expr
     FloatConstant(yyltype loc, double val);
     const char *GetPrintNameForNode() { return "FloatConstant"; }
     void PrintChildren(int indentLevel);
+    Type *GetType(){ return Type::floatType; }
 };
 
 class BoolConstant : public Expr 
@@ -77,6 +85,7 @@ class BoolConstant : public Expr
     BoolConstant(yyltype loc, bool val);
     const char *GetPrintNameForNode() { return "BoolConstant"; }
     void PrintChildren(int indentLevel);
+    Type *GetType(){ return Type::boolType; }
 };
 
 class VarExpr : public Expr
@@ -88,6 +97,10 @@ class VarExpr : public Expr
     VarExpr(yyltype loc, Identifier *id);
     const char *GetPrintNameForNode() { return "VarExpr"; }
     void PrintChildren(int indentLevel);
+
+    // using pseudotype bc simpler than checking for nulltype
+    Type *GetType(){ return Type::identifierType; }
+
 };
 
 class Operator : public Node 
@@ -113,6 +126,9 @@ class CompoundExpr : public Expr
     CompoundExpr(Operator *op, Expr *rhs);             // for unary
     CompoundExpr(Expr *lhs, Operator *op);             // for unary
     void PrintChildren(int indentLevel);
+
+    // TODO: could cause inheritance problems but shouldnt
+    virtual Type *GetType(){return Type::errorType;}
 };
 
 class ArithmeticExpr : public CompoundExpr 
@@ -121,6 +137,9 @@ class ArithmeticExpr : public CompoundExpr
     ArithmeticExpr(Expr *lhs, Operator *op, Expr *rhs) : CompoundExpr(lhs,op,rhs) {}
     ArithmeticExpr(Operator *op, Expr *rhs) : CompoundExpr(op,rhs) {}
     const char *GetPrintNameForNode() { return "ArithmeticExpr"; }
+    Type *GetType();
+    void Check();
+
 };
 
 class RelationalExpr : public CompoundExpr 

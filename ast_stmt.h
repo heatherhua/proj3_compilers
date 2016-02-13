@@ -162,6 +162,7 @@ class ReturnStmt : public Stmt
   public:
     ReturnStmt(yyltype loc, Expr *expr = NULL);
     const char *GetPrintNameForNode() { return "ReturnStmt"; }
+    void Check();
 //    void Check(vector< map<Node *, Node *> > * vector);
     void PrintChildren(int indentLevel);
 };

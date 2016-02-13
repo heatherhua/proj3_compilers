@@ -119,8 +119,6 @@ void FnDecl::Check(){
         for(int i = 0; i < temp->stmts->NumElements(); i++){
             if(strcmp(temp->stmts->Nth(i)->GetPrintNameForNode(), "ReturnStmt") == 0){
                 found = true;
-                ///checking if return type correct type
-                
             }
         }
     }
