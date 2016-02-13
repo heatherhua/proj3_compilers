@@ -8,6 +8,12 @@
 #include "ast_type.h"
 #include "ast_decl.h"
 
+void AssignExpr::Check() {
+    printf("AssignExpr Checking...\n");
+//    //Get last added scope in vector...and add decl to that one.
+//    map<Node *, Node *> scope = vector->back();
+//    scope[decl->getIdentifier()] = decl;
+}
 
 IntConstant::IntConstant(yyltype loc, int val) : Expr(loc) {
     value = val;

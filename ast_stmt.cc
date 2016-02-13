@@ -85,9 +85,9 @@ void StmtBlock::Check() {
 //    
 //    printf("checking stmtblock w/ %d elements\n",stmts->NumElements());
     for(int i = 0; i < stmts->NumElements(); i++){
-        printf("stmt %d: %s\n", i, this->GetPrintNameForNode());
+        printf("stmt %d: %s\n", i, stmts->Nth(i)->GetPrintNameForNode());
     
-    	//stmts->Nth(i)->Check();
+    	stmts->Nth(i)->Check();
     }
 
 
@@ -109,7 +109,7 @@ DeclStmt::DeclStmt(Decl *d) {
 }
 
 void DeclStmt::Check() {
-//    printf("DeclStmt checking\n");
+    printf("DeclStmt checking\n");
 //    //Get last added scope in vector...and add decl to that one.
 //    map<Node *, Node *> scope = vector->back();
 //    scope[decl->getIdentifier()] = decl;
