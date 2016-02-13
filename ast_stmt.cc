@@ -141,27 +141,42 @@ ForStmt::ForStmt(Expr *i, Expr *t, Expr *s, Stmt *b): LoopStmt(t, b) {
 }
 
 void ForStmt::Check(){
-        printf("Checking Forstmt. \n");
-        //make new symboltable
-        SymbolTable *newScope = new SymbolTable();
-        symbolTableVector->Append(newScope);
-        std::cout << "Making new scope in ForStmt " << 
-            symbolTableVector->NumElements() << "\n";
-        
-        // verify and add in parameters
-        // vars from ForStmt
-        init->Check();
-        step->Check();
+    printf("Checking Forstmt. \n");
+    //make new symboltable
+    SymbolTable *newScope = new SymbolTable();
+    symbolTableVector->Append(newScope);
+    std::cout << "Making new scope in ForStmt " << 
+        symbolTableVector->NumElements() << "\n";
+    
+    // verify and add in parameters
+    // vars from ForStmt
+    init->Check();
+    step->Check();
 
-        // verify and add in body
-        // vars from ConditionalStmt
-        test->Check();
-        body->Check();
+    // verify and add in body
+    // vars from ConditionalStmt
 
-        // pop
-        std::cout << "\n\nNumber of scopes BEFORE POP: " << symbolTableVector->NumElements() << "\n";
-        symbolTableVector->RemoveAt(symbolTableVector->NumElements()-1);
-        std::cout << "Number of scopes AFTER POP: " << symbolTableVector->NumElements() << "\n";
+    /* this is test->Check() */
+    bool found = false;
+
+    if((strcmp(test->GetPrintNameForNode(),"ArithmeticExpr")) == 0 ||
+        (strcmp(test->GetPrintNameForNode(),"RelationalExpr")) == 0 ||
+        (strcmp(test->GetPrintNameForNode(),"AssignExpr")) == 0 ||
+        (strcmp(test->GetPrintNameForNode(),"BoolConstant")) == 0){
+        found = true;
+    }
+    if(found == false){
+        ReportError::TestNotBoolean(test);
+    }
+
+    std::cout << "End breakstmt " << symbolTableVector->NumElements() << "\n";
+
+    body->Check();
+
+    // pop
+    std::cout << "\n\nNumber of scopes BEFORE POP: " << symbolTableVector->NumElements() << "\n";
+    symbolTableVector->RemoveAt(symbolTableVector->NumElements()-1);
+    std::cout << "Number of scopes AFTER POP: " << symbolTableVector->NumElements() << "\n";
 }
 
 void ForStmt::PrintChildren(int indentLevel) {
