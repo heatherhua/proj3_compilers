@@ -199,6 +199,18 @@ void IfStmt::PrintChildren(int indentLevel) {
 }
 
 
+void IfStmt::Check(){
+    //Stmt *elseBody;
+    //Expr *test;
+    //Stmt *body;
+        printf("Checking Ifstmt. \n");
+
+        test->Check();
+        body->Check();
+
+        if(elseBody) elseBody->Check();
+}
+
 ReturnStmt::ReturnStmt(yyltype loc, Expr *e) : Stmt(loc) { 
     expr = e;
     if (e != NULL) expr->SetParent(this);
