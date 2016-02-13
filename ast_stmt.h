@@ -46,11 +46,11 @@ class Stmt : public Node
 
 class StmtBlock : public Stmt 
 {
-  protected:
+  public:
     List<VarDecl*> *decls;
     List<Stmt*> *stmts;
     
-  public:
+
     StmtBlock(List<VarDecl*> *variableDeclarations, List<Stmt*> *statements);
     const char *GetPrintNameForNode() { return "StmtBlock"; }
 //    List<VarDecl *> *getVarDecls() { return decls; }

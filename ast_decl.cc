@@ -81,6 +81,7 @@ FnDecl::FnDecl(Identifier *n, Type *r, List<VarDecl*> *d) : Decl(n) {
 void FnDecl::Check(){
     printf("Checking function decl. \n");
     // check function declaration
+
     if(symbolTableVector->Last()->contains(this->getIdentifier()->getName())){
         Decl *old = dynamic_cast<Decl*>(symbolTableVector->Last()->lookup(this->getIdentifier()->getName()));
         ReportError::DeclConflict(this, old);
@@ -108,6 +109,20 @@ void FnDecl::Check(){
             symbolTableVector->Last()->insert(formals->Nth(i)->getIdentifier()->getName(),
                  formals->Nth(i));
         }
+    }
+
+        // checking return types
+    bool found = false;
+    if(returnType != Type::voidType){
+        StmtBlock *temp = dynamic_cast<StmtBlock*>(body);
+        for(int i = 0; i < temp->stmts->NumElements(); i++){
+            if(strcmp(temp->stmts->Nth(i)->GetPrintNameForNode(), "ReturnStmt") == 0){
+                found = true;
+            }
+        }
+    }
+    if(found == false){
+        ReportError::ReturnMissing(this);
     }
 
     body->Check();
