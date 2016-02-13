@@ -86,7 +86,10 @@ void StmtBlock::Check() {
 //    printf("checking stmtblock w/ %d elements\n",stmts->NumElements());
     for(int i = 0; i < stmts->NumElements(); i++){
         printf("stmt %d: %s\n", i, stmts->Nth(i)->GetPrintNameForNode());
-    
+        if(strcmp(this->GetPrintNameForNode(), "StmtBlock") == 0){
+            SymbolTable *newScope = new SymbolTable();
+            symbolTableVector->Append(newScope);
+        }
     	stmts->Nth(i)->Check();
     }
 

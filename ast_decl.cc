@@ -88,8 +88,8 @@ void FnDecl::Check(){
 
     // Check and add formals
     for(int i = 0; i < formals->NumElements(); i++) {
-        VarDecl *curr = formals->Nth(i);
-        curr->Check();
+        //VarDecl *curr = formals->Nth(i);
+        formals->Nth(i)->Check();
     }
 
     // Check function body
