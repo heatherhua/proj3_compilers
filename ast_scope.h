@@ -24,11 +24,8 @@ typedef std::map<string, Node*> Map;
 
 class SymbolTable
 {
-    protected:
-        
-        Map table;
-       
     public:
+        Map table;
         SymbolTable() {}
         
         void insert(char* symbol, Node* info) {

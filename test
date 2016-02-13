@@ -2,6 +2,7 @@ int x;
 float x;
 void main (int x) {
 
+	int y;
     int y;
     { 
         int y;

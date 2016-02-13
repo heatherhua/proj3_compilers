@@ -65,9 +65,10 @@ void StmtBlock::Check() {
             symbolTableVector->Append(newScope);
             std::cout << "Making new scope in stmtblock " << symbolTableVector->NumElements() << "\n";
         }
-       // std::cout << "Number of scopes: " << symbolTableVector->NumElements() << "\n";
+        std::cout << "Number of scopes: " << symbolTableVector->NumElements() << "\n";
+        printf("stmt %d: %s\n", i, stmts->Nth(i)->GetPrintNameForNode());
     	stmts->Nth(i)->Check();
-       // std::cout << "Number of scopes: " << symbolTableVector->NumElements() << "\n";
+        std::cout << "Number of scopes: " << symbolTableVector->NumElements() << "\n";
     }
 
     symbolTableVector->RemoveAt(symbolTableVector->NumElements()-1);
@@ -250,7 +251,29 @@ void SwitchLabel::Check(){
 
 void BreakStmt::Check(){
     printf("Checking BreakStmt. \n");
-    symbolTableVector->RemoveAt(symbolTableVector->NumElements()-1);
+
+    //create map iterator
+    Map::iterator it;
+    bool found = false;
+
+    for(int i = symbolTableVector->NumElements()-1; i >= 0; i--){ 
+        // check if contains loopstatement
+        SymbolTable *currMap = symbolTableVector->Nth(i);
+        for(it = currMap->table.begin(); it != currMap->table.end(); ++it){
+            std::cout << "it first:" << it->first << "\n";
+            if((strcmp(it->second->GetPrintNameForNode(),"ForStmt")) == 0 ||
+                (strcmp(it->second->GetPrintNameForNode(),"WhileStmt")) == 0){
+                found = true;
+            }
+        }
+    }
+
+    if(found == false){
+        ReportError::BreakOutsideLoop(this);
+    }
+    else{
+        symbolTableVector->RemoveAt(symbolTableVector->NumElements()-1);
+    }
 }
 
 void SwitchStmt::Check(){

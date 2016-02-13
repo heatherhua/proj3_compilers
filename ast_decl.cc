@@ -110,8 +110,6 @@ void FnDecl::Check(){
         }
     }
 
-
-
     body->Check();
     //std::cout << "Number of scopes: " << symbolTableVector->NumElements() << "\n";
 
