@@ -98,16 +98,22 @@ void DeclStmt::Check() {
     bool error = false;
     char *symbol = decl->getIdentifier()->getName();
     printf("symbol, %s\n", symbol);
-    printf("symbolTableVector->contains() %d\n", 
-        symbolTableVector->Last()->contains(symbol) == 1 );
+    printf("symbolTableVector->contains() %d\n", symbolTableVector->Last()->contains(symbol) );
+    Decl *o;
+
     if(symbolTableVector->Last()->contains(symbol) == 1){
-//            printf("ERROR decl already exists \n");
-        //Decl *o = dynamic_cast<Decl*>(symbolTableVector->Last()->lookup(symbol));
-        //printf("error value %s \n\n", o->GetPrintNameForNode()); 
-        ///ReportError::DeclConflict(decl, o);           
-        //symbolTableVector->Last()->update(symbol, this);
-        //error = true;
-        //return;
+        if(strcmp(symbolTableVector->Last()->lookup(symbol)->GetPrintNameForNode(), "StmtBlock") == 0){
+        
+    //      printf("ERROR decl already exists \n");
+            o = (dynamic_cast<DeclStmt*>(symbolTableVector->Last()->lookup(symbol))->decl);   
+        }
+        else{
+            o = dynamic_cast<Decl*>(symbolTableVector->Last()->lookup(symbol));
+        }
+        ReportError::DeclConflict(decl, o);           
+        symbolTableVector->Last()->update(symbol, this);
+        error = true;
+        //if(symbolTableVector->Last()->lookup(symbol)) == )
     }
     
     // No error
