@@ -124,7 +124,7 @@ class IfStmt : public ConditionalStmt
     IfStmt() : ConditionalStmt(), elseBody(NULL) {}
     IfStmt(Expr *test, Stmt *thenBody, Stmt *elseBody);
     const char *GetPrintNameForNode() { return "IfStmt"; }
-//    void Check(vector< map<Node *, Node *> > * vector);
+    void Check();
     void PrintChildren(int indentLevel);
 };
 
