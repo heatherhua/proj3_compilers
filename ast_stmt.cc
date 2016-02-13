@@ -222,6 +222,46 @@ void SwitchLabel::PrintChildren(int indentLevel) {
     if (label) label->Print(indentLevel+1);
     if (stmt)  stmt->Print(indentLevel+1);
 }
+void SwitchLabel::Check(){
+    //     Expr     *label;
+    // Stmt     *stmt;
+    printf("Checking SwitchLabel. \n");
+
+    // check label
+    printf("Value of SwitchLabel:label %s\n", label->GetPrintNameForNode());
+    label->Check();
+
+    // Push new scope onto stack
+    SymbolTable *newScope = new SymbolTable();
+    symbolTableVector->Append(newScope);
+
+    std::cout << "Number of scopes: " << symbolTableVector->NumElements() << "\n";
+
+    // Check and verify statement body
+    printf("Value of SwitchLabel:stmt %s\n", stmt->GetPrintNameForNode());
+    stmt->Check();
+
+    // pop 
+    //symbolTableVector->RemoveAt(symbolTableVector->NumElements()-1);
+
+}
+
+void SwitchStmt::Check(){
+    // TODO: FIND OUT SCOPING!!! ***********************/
+       // printf("Checking SwitchStmt. \n");
+        // verify the expr
+        printf("Value of SwitchSTmt:Expr: %s\n", expr->GetPrintNameForNode());
+        expr->Check();
+
+        // verify all stmts in List<Stmt>
+        for(int i = 0; i < cases->NumElements(); i++){
+            printf("Value of SwitchStmt:case %d: %s\n", i, cases->Nth(i)->GetPrintNameForNode());
+            cases->Nth(i)->Check();
+        }
+        // verify default
+        //printf("Value of SwitchSTmt:def: %s\n", def->GetPrintNameForNode());
+        if(def) def->Check();
+}
 
 SwitchStmt::SwitchStmt(Expr *e, List<Stmt *> *c, Default *d) {
     Assert(e != NULL && c != NULL && c->NumElements() != 0 );

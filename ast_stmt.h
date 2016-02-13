@@ -175,6 +175,7 @@ class SwitchLabel : public Stmt
     SwitchLabel(Expr *label, Stmt *stmt);
     SwitchLabel(Stmt *stmt);
     void PrintChildren(int indentLevel);
+    void Check();
 };
 
 class Case : public SwitchLabel
@@ -207,6 +208,7 @@ class SwitchStmt : public Stmt
     virtual const char *GetPrintNameForNode() { return "SwitchStmt"; }
 //    void Check(vector< map<Node *, Node *> > * vector);
     void PrintChildren(int indentLevel);
+    void Check();
 };
 
 class SwitchStmtError : public SwitchStmt
