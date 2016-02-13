@@ -111,6 +111,8 @@ void FnDecl::Check(){
     }
 
     body->Check();
+    //std::cout << "FnDecl: return after body check " << symbolTableVector->NumElements() << "\n";
+    symbolTableVector->RemoveAt(symbolTableVector->NumElements()-1);
     //std::cout << "Number of scopes: " << symbolTableVector->NumElements() << "\n";
 
 //    std::cout << "Number of entries in function scope: " 

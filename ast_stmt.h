@@ -150,7 +150,7 @@ class ContinueStmt : public Stmt
   public:
     ContinueStmt(yyltype loc) : Stmt(loc) {}
     const char *GetPrintNameForNode() { return "ContinueStmt"; }
-//    void Check(vector< map<Node *, Node *> > * vector);
+    void Check();
 };
 
 class ReturnStmt : public Stmt  
