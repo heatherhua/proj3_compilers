@@ -20,7 +20,7 @@ Program::Program(List<Decl*> *d) {
 
 void Program::PrintChildren(int indentLevel) {
     decls->PrintAll(indentLevel+1);
-    printf("\n");
+    // printf("\n");
 }
 
 void Program::Check() {

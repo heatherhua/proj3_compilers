@@ -118,7 +118,7 @@ void VarExpr::Check(){
   // make sure identifier exists
   bool found = false;
   char *symbol = this->id->getName();
-  printf("Checking VarExpr...%s\n", symbol);
+  // printf("Checking VarExpr...%s\n", symbol);
   for(int i = symbolTableVector->NumElements()-1; i >= 0; i--){ 
         // printf("symbol, %s\n", symbol);
         // printf("symbolTableVector->contains() %d\n", 
