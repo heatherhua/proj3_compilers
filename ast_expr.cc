@@ -95,6 +95,10 @@ void ArithmeticExpr::Check(){
       }
     }
     else{
+      // if(strcmp(missingDecl->getName(), dynamic_cast<VarExpr*>(right)->id->getName()) == 0){
+      //   // printf("Missing decl: %s\n", missingDecl->getName());
+      //   // symbolTableVector->Last()->insert(missingDecl->getName(), new VarDecl(right->GetIdentifier(), Type::vec4Type));
+      // }
       // check if unary is scalar
       if((right->GetType()->Compare(Type::intType) || 
             right->GetType()->Compare(Type::floatType)) != true) {
@@ -216,10 +220,11 @@ FieldAccess::FieldAccess(Expr *b, Identifier *f)
     // Check if VarExpr is vector type
     if(base){
       base->Check();
-      if(missingDecl){
-        // printf("Missing decl: %s\n", missingDecl->getName());
-        symbolTableVector->Last()->insert(missingDecl->getName(), new VarDecl(field, Type::vec4Type));
-      }
+
+      // if(strcmp(missingDecl->getName(), field->getName()) == 0){
+      //   // printf("Missing decl: %s\n", missingDecl->getName());
+      //   symbolTableVector->Last()->insert(missingDecl->getName(), new VarDecl(field, Type::vec4Type));
+      // }
       
       Type * type = base->GetType();
       if((

@@ -1,20 +1,4 @@
-/*
-Consider b.xy where b is undeclared. You report about b, but should you also report
-that you can’t apply swizzle to a non-vector type? If you assume that if b was supposed
-to have been declared of the needed vector type, the second would also be fixed.
-What about b.a = 10.0? b is still undeclared, but the vector swizzle is also not right.
-Fixing the declaration of b won't fix the vector swizzle problem, so there are two errors
-to report. 
-Now consider b.a = 1 + 4.0. The error on the right side is yet another distinct error
-(comingled int and float) and fixing the left hand side will not fix that error, so there are
-three errors to report. The idea is that each distinct error that requires an independent
-action to correct gets its own error message, but those errors due to the same root
-cause are not re-reported
-*/
-
-
-
 void main() {
- b.xy;
- b.a = 10.0;
+ b;
+ ++b;
 }
