@@ -160,6 +160,7 @@ class ReturnStmt : public Stmt
     const char *GetPrintNameForNode() { return "ReturnStmt"; }
     void Check();
     void PrintChildren(int indentLevel);
+    Type* GetType();
 };
 
 class SwitchLabel : public Stmt

@@ -122,21 +122,30 @@ void FnDecl::Check(){
     }
 
     // checking if has return types 
-    bool found = true;
-    if(returnType != Type::voidType){
-        found = false;
+    // bool found = true;
+    // if(returnType != Type::voidType){
+        // found = false;
+    body->Check();
         StmtBlock *temp = dynamic_cast<StmtBlock*>(body);
         for(int i = 0; i < temp->stmts->NumElements(); i++){
+            
             if(strcmp(temp->stmts->Nth(i)->GetPrintNameForNode(), "ReturnStmt") == 0){
-                found = true;
+                // found = true;
+                Stmt* stmt = temp->stmts->Nth(i);
+                if(returnType == Type::voidType){
+                // ReportError::ReturnMismatch(ReturnStmt *rStmt, Type *given, Type *expected);
+                    ReportError::ReturnMismatch(dynamic_cast<ReturnStmt*>(stmt), 
+                        dynamic_cast<ReturnStmt*>(stmt)->GetType(), Type::voidType);
+
+                }
             }
         }
-    }
-    if(found == false){
-        ReportError::ReturnMissing(this);
-    }
+    // }
+    // if(found == false){
+        // ReportError::ReturnMissing(this);
+    // }
 
-    body->Check();
+    // body->Check();
     //std::cout << "FnDecl: return after body check " << symbolTableVector->NumElements() << "\n";
     symbolTableVector->RemoveAt(symbolTableVector->NumElements()-1);
     //std::cout << "Number of scopes: " << symbolTableVector->NumElements() << "\n";

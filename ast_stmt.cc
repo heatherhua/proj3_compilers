@@ -122,6 +122,13 @@ Type* DeclStmt::GetType(){
     return Type::errorType;
 }
 
+Type* ReturnStmt::GetType(){
+    if(expr){
+        return expr->GetType();
+    }
+    return Type::errorType;
+}
+
 ConditionalStmt::ConditionalStmt(Expr *t, Stmt *b) { 
     Assert(t != NULL && b != NULL);
     (test=t)->SetParent(this); 

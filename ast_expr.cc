@@ -36,6 +36,7 @@ Type* ArithmeticExpr::GetType(){
 Type* VarExpr::GetType(){
   printf("VarExpr GetType Checking...\n");
   char *symbol = id->getName();
+  printf("Search the symbol...%s\n", symbol);
   
   for(int i = symbolTableVector->NumElements()-1; i >= 0; i--){ 
     SymbolTable *table = symbolTableVector->Nth(i);
