@@ -19,6 +19,8 @@
 #include "list.h"
  #include "error.h"
 
+Identifier* missingDecl;
+
 void yyerror(const char *msg);
 
 class Expr : public Stmt 

@@ -11,6 +11,7 @@
  #include "errors.h"
  #include "ast.h"
 
+extern Identifier * missingDecl;
 
 Type* ArithmeticExpr::GetType(){
   // printf("ArithmeticExpr GetType Checking...\n");
@@ -149,6 +150,7 @@ void VarExpr::Check(){
 
   if(!found){
     ReportError::IdentifierNotDeclared(this->id, LookingForVariable);
+    missingDecl = this->id;
   }
 }
 
@@ -214,6 +216,11 @@ FieldAccess::FieldAccess(Expr *b, Identifier *f)
     // Check if VarExpr is vector type
     if(base){
       base->Check();
+      if(missingDecl){
+        // printf("Missing decl: %s\n", missingDecl->getName());
+        symbolTableVector->Last()->insert(missingDecl->getName(), new VarDecl(field, Type::vec4Type));
+      }
+      
       Type * type = base->GetType();
       if((
         (type->Compare(Type::vec2Type)) ||   
