@@ -19,6 +19,7 @@ void AssignExpr::Check() {
 }
 
 Type* ArithmeticExpr::GetType(){
+  printf("ArithmeticExpr GetType Checking...\n");
   // check if unary or binary
   // TODO: Should we check this, left, and right?
   if(left){
@@ -26,12 +27,14 @@ Type* ArithmeticExpr::GetType(){
       return left->GetType();
     }
   }
-  else{ // if unary
+  else{// if unary
     return right->GetType();
   }
+  return Type::errorType;
 }
 
 void ArithmeticExpr::Check(){
+  printf("ArithmeticExpr Checking...\n");
 
     // Check left and right
     left->Check();
@@ -43,13 +46,6 @@ void ArithmeticExpr::Check(){
       if(!(left->GetType()->Compare(right->GetType()))){
         ReportError::IncompatibleOperands(op, left->GetType(),
            right->GetType());
-        // update symbol table for cascading errors
-        // if((left->GetType()->Compare(Type::floatType) && 
-        //     (right->GetType()->Compare(Type::intType))) ||
-        //     (right->GetType()->Compare(Type::floatType) && 
-        //     (left->GetType()->Compare(Type::intType)))){
-        //     
-        // }
       }
       else{ // if not scalar
         if((left->GetType()->Compare(Type::intType) || 

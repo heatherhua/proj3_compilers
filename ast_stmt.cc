@@ -347,7 +347,7 @@ void SwitchStmt::Check(){
         // check if expr is correct type
         // printing type
         printf("Getting Type expr in switch: %s\n\n", expr->GetType()->GetPrintNameForNode());
-        //expr->Check();
+        expr->Check();
 
         // verify all stmts in List<Stmt>
         //for(int i = 0; i < cases->NumElements(); i++){
