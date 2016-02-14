@@ -345,16 +345,18 @@ void SwitchStmt::Check(){
         printf("Value of SwitchSTmt:Expr: %s\n", expr->GetPrintNameForNode());
         
         // check if expr is correct type
-        expr->Check();
+        // printing type
+        printf("Getting Type expr in switch: %s\n\n", expr->GetType()->GetPrintNameForNode());
+        //expr->Check();
 
         // verify all stmts in List<Stmt>
-        for(int i = 0; i < cases->NumElements(); i++){
-            printf("Value of SwitchStmt:case %d: %s\n", i, cases->Nth(i)->GetPrintNameForNode());
-            cases->Nth(i)->Check();
-        }
+        //for(int i = 0; i < cases->NumElements(); i++){
+        //    printf("Value of SwitchStmt:case %d: %s\n", i, cases->Nth(i)->GetPrintNameForNode());
+        //    cases->Nth(i)->Check();
+       // }
         // verify default
         //if(def) printf("Value of SwitchSTmt:def: %s\n", def->GetPrintNameForNode());
-        if(def) def->Check();
+       // if(def) def->Check();
 }
 
 SwitchStmt::SwitchStmt(Expr *e, List<Stmt *> *c, Default *d) {

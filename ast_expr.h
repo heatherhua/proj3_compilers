@@ -62,6 +62,7 @@ class IntConstant : public Expr
     const char *GetPrintNameForNode() { return "IntConstant"; }
     void PrintChildren(int indentLevel);
     Type *GetType(){ return Type::intType; }
+    void Check(){};
 };
 
 class FloatConstant: public Expr 
@@ -74,6 +75,7 @@ class FloatConstant: public Expr
     const char *GetPrintNameForNode() { return "FloatConstant"; }
     void PrintChildren(int indentLevel);
     Type *GetType(){ return Type::floatType; }
+    void Check(){};
 };
 
 class BoolConstant : public Expr 
@@ -86,6 +88,7 @@ class BoolConstant : public Expr
     const char *GetPrintNameForNode() { return "BoolConstant"; }
     void PrintChildren(int indentLevel);
     Type *GetType(){ return Type::boolType; }
+    void Check(){};
 };
 
 class VarExpr : public Expr
@@ -97,7 +100,7 @@ class VarExpr : public Expr
     VarExpr(yyltype loc, Identifier *id);
     const char *GetPrintNameForNode() { return "VarExpr"; }
     void PrintChildren(int indentLevel);
-
+    void Check();
     // using pseudotype bc simpler than checking for nulltype
     Type *GetType(){ return Type::identifierType; }
 

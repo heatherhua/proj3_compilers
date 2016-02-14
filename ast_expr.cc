@@ -43,13 +43,13 @@ void ArithmeticExpr::Check(){
       if(!(left->GetType()->Compare(right->GetType()))){
         ReportError::IncompatibleOperands(op, left->GetType(),
            right->GetType());
-        if((left->GetType()->Compare(Type::floatType) && 
-            (right->GetType()->Compare(Type::intType))) ||
-            (right->GetType()->Compare(Type::floatType) && 
-            (left->GetType()->Compare(Type::intType)))){
-          // TODO UPDATE SYMBOL TABLE for left and right
-          //symbolTableVector->Last()->update()
-        }
+        // update symbol table for cascading errors
+        // if((left->GetType()->Compare(Type::floatType) && 
+        //     (right->GetType()->Compare(Type::intType))) ||
+        //     (right->GetType()->Compare(Type::floatType) && 
+        //     (left->GetType()->Compare(Type::intType)))){
+        //     
+        // }
       }
       else{ // if not scalar
         if((left->GetType()->Compare(Type::intType) || 
@@ -96,6 +96,27 @@ VarExpr::VarExpr(yyltype loc, Identifier *ident) : Expr(loc) {
 
 void VarExpr::PrintChildren(int indentLevel) {
     id->Print(indentLevel+1);
+}
+
+void VarExpr::Check(){
+  // make sure identifier exists
+  bool found = false;
+    
+    for(int i = symbolTableVector->NumElements()-1; i >= 0; i--){ 
+        char *symbol = this->id->getName();
+        printf("symbol, %s\n", symbol);
+        printf("symbolTableVector->contains() %d\n", 
+            symbolTableVector->Nth(i)->contains(symbol) == 1 );
+         if(symbolTableVector->Nth(i)->contains(symbol) == 1){
+
+          found = true;
+          break;
+         } 
+    }
+
+    if(!found){
+      ReportError::IdentifierNotDeclared(this->id, LookingForVariable);
+    }
 }
 
 Operator::Operator(yyltype loc, const char *tok) : Node(loc) {
