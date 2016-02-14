@@ -46,15 +46,13 @@ void VarDecl::Check(){
     
     for(int i = symbolTableVector->NumElements()-1; i >= 0; i--){ 
         char *symbol = this->getIdentifier()->getName();
-        printf("symbol, %s\n", symbol);
-        printf("symbolTableVector->contains() %d\n", 
-            symbolTableVector->Nth(i)->contains(symbol) == 1 );
+        printf("Symbol, %s\n", symbol);
+        // printf("symbolTableVector->contains() %d\n", 
+            // symbolTableVector->Nth(i)->contains(symbol) == 1 );
         if(symbolTableVector->Nth(i)->contains(symbol) == 1){
-//            printf("ERROR decl already exists \n");
             Decl *decl = dynamic_cast<Decl*>(symbolTableVector->Nth(i)->lookup(symbol));
             
             ReportError::DeclConflict(this, decl);           
-            //ReportError::DeclConflict(this, symbolTableVector->Nth(i)->lookup(symbol));
             symbolTableVector->Nth(i)->update(symbol, this);
             error = true;
             break;
@@ -80,7 +78,6 @@ FnDecl::FnDecl(Identifier *n, Type *r, List<VarDecl*> *d) : Decl(n) {
 
 void FnDecl::Check(){
     printf("Checking function decl. \n");
-    // check function declaration
 
     if(symbolTableVector->Last()->contains(this->getIdentifier()->getName())){
         Decl *old = dynamic_cast<Decl*>(symbolTableVector->Last()->lookup(this->getIdentifier()->getName()));
@@ -130,10 +127,6 @@ void FnDecl::Check(){
     //std::cout << "FnDecl: return after body check " << symbolTableVector->NumElements() << "\n";
     symbolTableVector->RemoveAt(symbolTableVector->NumElements()-1);
     //std::cout << "Number of scopes: " << symbolTableVector->NumElements() << "\n";
-
-//    std::cout << "Number of entries in function scope: " 
-//	    << functionScope.size() << "\n";
-    
 }
 
 void FnDecl::SetFunctionBody(Stmt *b) { 
