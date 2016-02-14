@@ -213,6 +213,7 @@ FieldAccess::FieldAccess(Expr *b, Identifier *f)
     // printf("Checking Field Access...%s\n\n", field->getName());
     // Check if VarExpr is vector type
     if(base){
+      base->Check();
       Type * type = base->GetType();
       if((
         (type->Compare(Type::vec2Type)) ||   
