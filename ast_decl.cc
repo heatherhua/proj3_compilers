@@ -122,30 +122,33 @@ void FnDecl::Check(){
     }
 
     // checking if has return types 
-    // bool found = true;
-    // if(returnType != Type::voidType){
-        // found = false;
     body->Check();
-        StmtBlock *temp = dynamic_cast<StmtBlock*>(body);
-        for(int i = 0; i < temp->stmts->NumElements(); i++){
-            
-            if(strcmp(temp->stmts->Nth(i)->GetPrintNameForNode(), "ReturnStmt") == 0){
-                // found = true;
-                Stmt* stmt = temp->stmts->Nth(i);
-                if(returnType == Type::voidType){
-                // ReportError::ReturnMismatch(ReturnStmt *rStmt, Type *given, Type *expected);
-                    ReportError::ReturnMismatch(dynamic_cast<ReturnStmt*>(stmt), 
-                        dynamic_cast<ReturnStmt*>(stmt)->GetType(), Type::voidType);
 
-                }
+    StmtBlock *temp = dynamic_cast<StmtBlock*>(body);
+
+    // Is there a return?
+    bool found = false;
+    for(int i = 0; i < temp->stmts->NumElements(); i++){
+        if(strcmp(temp->stmts->Nth(i)->GetPrintNameForNode(), "ReturnStmt") == 0){
+            // Found a return
+            found = true;
+
+            Stmt* stmt = temp->stmts->Nth(i);
+
+            // Make sure we are returning correct type            
+            if(returnType == Type::voidType && 
+                dynamic_cast<ReturnStmt*>(stmt)->GetType() != Type::voidType){
+                ReportError::ReturnMismatch(dynamic_cast<ReturnStmt*>(stmt), 
+                    dynamic_cast<ReturnStmt*>(stmt)->GetType(), Type::voidType);
+
             }
         }
-    // }
-    // if(found == false){
-        // ReportError::ReturnMissing(this);
-    // }
+    }
+    std::cout << "Is there missing return?..." ;
+    if(returnType != Type::voidType && found == false){
+        ReportError::ReturnMissing(this);
+    }
 
-    // body->Check();
     //std::cout << "FnDecl: return after body check " << symbolTableVector->NumElements() << "\n";
     symbolTableVector->RemoveAt(symbolTableVector->NumElements()-1);
     //std::cout << "Number of scopes: " << symbolTableVector->NumElements() << "\n";

@@ -122,11 +122,12 @@ Type* DeclStmt::GetType(){
     return Type::errorType;
 }
 
+
 Type* ReturnStmt::GetType(){
     if(expr){
         return expr->GetType();
     }
-    return Type::errorType;
+    return Type::voidType;
 }
 
 ConditionalStmt::ConditionalStmt(Expr *t, Stmt *b) { 
@@ -255,7 +256,9 @@ void ReturnStmt::PrintChildren(int indentLevel) {
 
 void ReturnStmt::Check(){
     // check if valid expr
-    expr->Check();
+    if(expr){
+        expr->Check();
+    }
 }
   
 SwitchLabel::SwitchLabel(Expr *l, Stmt *s) {
