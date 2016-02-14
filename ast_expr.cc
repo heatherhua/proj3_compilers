@@ -11,12 +11,6 @@
  #include "errors.h"
  #include "ast.h"
 
-void AssignExpr::Check() {
-    // printf("AssignExpr Checking...\n");
-//    //Get last added scope in vector...and add decl to that one.
-//    map<Node *, Node *> scope = vector->back();
-//    scope[decl->getIdentifier()] = decl;
-}
 
 Type* ArithmeticExpr::GetType(){
   // printf("ArithmeticExpr GetType Checking...\n");
@@ -48,6 +42,29 @@ Type* VarExpr::GetType(){
     }
   }
   return Type::errorType;
+}
+
+void AssignExpr::Check() {
+    // Expr *left, *right;
+  left->Check();
+  right->Check();
+
+  //TODO Check types... error recovery.
+
+  if(!(left->GetType()->Compare(right->GetType())) &&
+    (left->GetType() != Type::errorType) &&
+    (right->GetType() != Type::errorType)
+    ){
+
+  //TODO Look up left in Symbol tables and get the type of THAT
+    ReportError::IncompatibleOperands(op, left->GetType(),
+      right->GetType());
+
+  }
+    // printf("AssignExpr Checking...\n");
+//    //Get last added scope in vector...and add decl to that one.
+//    map<Node *, Node *> scope = vector->back();
+//    scope[decl->getIdentifier()] = decl;
 }
 
 void ArithmeticExpr::Check(){
