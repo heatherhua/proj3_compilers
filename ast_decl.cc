@@ -22,6 +22,7 @@ Decl::Decl(Identifier *n) : Node(*n->GetLocation()) {
 }
 
 Type* Decl::GetType(){
+    //printf("in decl GetType");
     Type * type;
     if(strcmp(this->GetPrintNameForNode(), "VarDecl") == 0){
         type = dynamic_cast<VarDecl*>(this)->GetType();
@@ -50,6 +51,7 @@ VarDecl::VarDecl(Identifier *n, Type *t) : Decl(n) {
     Assert(n != NULL && t != NULL);
     (type=t)->SetParent(this);
 }
+
   
 void VarDecl::Check(){
     bool error = false;

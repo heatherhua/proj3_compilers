@@ -28,17 +28,22 @@ Type* ArithmeticExpr::GetType(){
 }
 
 Type* VarExpr::GetType(){
-  // printf("VarExpr GetType Checking...\n");
-  char *symbol = id->getName();
+   //printf("VarExpr GetType Checking...\n");
+   char *symbol = id->getName();
   // printf("Search the symbol...%s\n", symbol);
-  
-  for(int i = symbolTableVector->NumElements()-1; i >= 0; i--){ 
-    SymbolTable *table = symbolTableVector->Nth(i);
-    if(table->contains(symbol) == 1){
+  // printf("var expr get type");
+   for(int i = symbolTableVector->NumElements()-1; i >= 0; i--){ 
+     SymbolTable *table = symbolTableVector->Nth(i);
+     if(table->contains(symbol) == 1){
       
+      VarDecl *p = dynamic_cast<VarDecl*>(table->lookup(symbol));
       DeclStmt *d = dynamic_cast<DeclStmt*>(table->lookup(symbol));
-
-      return d->GetType();
+      if(d){
+        return d->GetType();
+      }
+       else if(p){
+         return p->GetType();
+      }
     }
   }
   return Type::errorType;
@@ -62,41 +67,42 @@ void AssignExpr::Check() {
 
   }
     // printf("AssignExpr Checking...\n");
-//    //Get last added scope in vector...and add decl to that one.
+    //Get last added scope in vector...and add decl to that one.
 //    map<Node *, Node *> scope = vector->back();
 //    scope[decl->getIdentifier()] = decl;
 }
 
 void ArithmeticExpr::Check(){
-  // printf("ArithmeticExpr Checking...\n");
+   //printf("ArithmeticExpr Checking...\n");
 
     // Check left and right
-    left->Check();
+    if(left) left->Check();
     right->Check();
 
-    // check if unary or binary
+    // // check if unary or binary
     if(left){
-      // if types dont match or values not scalar, report error
-      if(!(left->GetType()->Compare(right->GetType()))){
+    // //   // if types dont match or values not scalar, report error
+        if(!(left->GetType()->Compare(right->GetType()))){
 
-        //TODO Look up left in Symbol tables and get the type of THAT
-        ReportError::IncompatibleOperands(op, left->GetType(),
-           right->GetType());
+    // //     //TODO Look up left in Symbol tables and get the type of THAT
+          ReportError::IncompatibleOperands(op, left->GetType(),
+             right->GetType());
 
-      }
-      else{ // if not scalar
-        if((left->GetType()->Compare(Type::intType) || 
-            left->GetType()->Compare(Type::floatType)) != true){
-          ReportError::IncompatibleOperands(op,left->GetType(),
-              right->GetType());       
         }
-      }
-    }
+        else{ // if not scalar
+            if((left->GetType()->Compare(Type::intType) || 
+            left->GetType()->Compare(Type::floatType)) != true){
+         ReportError::IncompatibleOperands(op,left->GetType(),
+           right->GetType());       
+         }
+        }
+   }
     else{
-      // check if unary is scalar
-      if((right->GetType()->Compare(Type::intType) || 
-            right->GetType()->Compare(Type::floatType)) != true)
-        ReportError::IncompatibleOperand(op, right->GetType());
+       // check if unary is scalar
+        if((right->GetType()->Compare(Type::intType) || 
+              right->GetType()->Compare(Type::floatType)) != true){
+          ReportError::IncompatibleOperand(op, right->GetType());
+        }
     }
 
 }

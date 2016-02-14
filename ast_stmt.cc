@@ -110,6 +110,7 @@ void DeclStmt::PrintChildren(int indentLevel) {
 }
 
 Type* DeclStmt::GetType(){
+    //printf("getting type declstmt");
     if(decl){
         return decl->GetType();
     }

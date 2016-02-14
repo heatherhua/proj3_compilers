@@ -49,7 +49,7 @@ class EmptyExpr : public Expr
 {
   public:
     const char *GetPrintNameForNode() { return "Empty"; }
-    // Type *GetType(){ return Type::errorType; }
+     Type *GetType(){ printf("in emptyexprGetType"); return Type::errorType; }
 };
 
 class IntConstant : public Expr 
