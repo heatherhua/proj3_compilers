@@ -9,6 +9,8 @@
 #include "ast_expr.h"
 #include "errors.h"
 #include "ast.h"
+#include <stdio.h>
+ #include "ast_type.h"
 
 
 Program::Program(List<Decl*> *d) {
@@ -111,6 +113,12 @@ void DeclStmt::Check() {
 
 void DeclStmt::PrintChildren(int indentLevel) {
     decl->Print(indentLevel+1);
+}
+
+Type* DeclStmt::GetType(){
+    if(decl){
+        return decl->GetType();
+    }
 }
 
 ConditionalStmt::ConditionalStmt(Expr *t, Stmt *b) { 

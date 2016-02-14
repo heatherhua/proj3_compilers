@@ -16,6 +16,7 @@
 #include "list.h"
 #include "ast.h"
 #include "ast_scope.h"
+#include "ast_type.h"
 
 class Decl;
 class VarDecl;
@@ -70,6 +71,7 @@ class DeclStmt: public Stmt
     
     void Check();
     void PrintChildren(int indentLevel);
+    Type *GetType();
 };
   
 class ConditionalStmt : public Stmt

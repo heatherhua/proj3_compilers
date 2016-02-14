@@ -40,6 +40,9 @@ class SymbolTable
             std::string s(id);
             std::cout << "Looked up : " << s << "\n";
             // return table.find(s)->second;
+            //Node *b = 
+            std::cout << "found at in table : " << s << "\n";
+            //printf("\n%s\n",table.at(s)->GetNodePrintName());
             return table.at(s);
         }
         

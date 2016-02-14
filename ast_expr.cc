@@ -41,14 +41,15 @@ Type* VarExpr::GetType(){
     SymbolTable *table = symbolTableVector->Nth(i);
     if(table->contains(symbol) == 1){
       printf("Found the symbol...%s\n", symbol);
-      Node *n = table->lookup(symbol);
+      
       // printf("Node: %s", n->GetPrintNameForNode());
       // Decl *decl = dynamic_cast<Decl*>(table->lookup(symbol));
-      printf("oh...");
-      Decl *decl = dynamic_cast<Decl*>(n);
+      
+      printf("in here\n");
+      DeclStmt *d = dynamic_cast<DeclStmt*>(table->lookup(symbol));
 
-      // printf("oh...");
-      return decl->GetType();
+       printf("oh...");
+      return d->GetType();
     }
   }
   return Type::errorType;

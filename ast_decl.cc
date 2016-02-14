@@ -10,6 +10,7 @@
 #include <string.h>
 #include <vector> 
 #include <map> 
+#include <stdio.h>
 
 Decl::Decl() : id(NULL) {
 }
@@ -58,9 +59,9 @@ void VarDecl::Check(){
     for(int i = symbolTableVector->NumElements()-1; i >= 0; i--){ 
         char *symbol = this->getIdentifier()->getName();
         std::cout << "VarDecl checking..." << symbol << "\n";
-        // printf("Symbol, %s\n", symbol);
-        // printf("symbolTableVector->contains() %d\n", 
-            // symbolTableVector->Nth(i)->contains(symbol) == 1 );
+         printf("Symbol, %s\n", symbol);
+         printf("symbolTableVector->contains() %d\n", 
+             symbolTableVector->Nth(i)->contains(symbol) == 1 );
         if(symbolTableVector->Nth(i)->contains(symbol) == 1){
             Decl *decl = dynamic_cast<Decl*>(symbolTableVector->Nth(i)->lookup(symbol));
             
