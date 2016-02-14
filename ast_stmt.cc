@@ -119,6 +119,7 @@ Type* DeclStmt::GetType(){
     if(decl){
         return decl->GetType();
     }
+    return Type::errorType;
 }
 
 ConditionalStmt::ConditionalStmt(Expr *t, Stmt *b) { 
