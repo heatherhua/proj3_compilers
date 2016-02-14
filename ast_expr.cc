@@ -209,6 +209,37 @@ FieldAccess::FieldAccess(Expr *b, Identifier *f)
     (field=f)->SetParent(this);
 }
 
+  void FieldAccess::Check(){
+    printf("Checking Field Access...%s\n\n", field->getName());
+    // Expr *base; // will be NULL if no explicit base
+    // Identifier *field;
+
+    // Check if VarExpr is vector type
+    if(base){
+      Type * type = base->GetType();
+      if((
+        (type->Compare(Type::vec2Type)) ||   
+        (type->Compare(Type::vec3Type)) ||   
+        (type->Compare(Type::vec4Type)) ) == false
+        ) {
+        ReportError::InaccessibleSwizzle(field, base);
+        //TODO Do something to stop cascading errors
+        // Make base into a vec4 type
+
+      }
+      // It is indeed a vector type
+      // Check size...no more than 4
+      if(strlen(field->getName()) > 4){
+        ReportError::OversizedVector(field, base);
+      }
+      // vec2 v2; vec2.xyxy is LEGAL --> evaluates to a vec4 
+      // Check if all letters in field are subset of [xzyw]
+
+
+    }
+
+
+  }
 
   void FieldAccess::PrintChildren(int indentLevel) {
     if (base) base->Print(indentLevel+1);
