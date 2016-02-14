@@ -29,7 +29,7 @@ Type *Type::errorType  = new Type("error");
 
 // making this pseudo type because easier than
 // checking if type null for expr
-Type *Type::identifierType = new Type("identifier");
+// Type *Type::identifierType = new Type("identifier");
 
 Type::Type(const char *n) {
     Assert(n);

@@ -12,14 +12,14 @@
  #include "ast.h"
 
 void AssignExpr::Check() {
-    printf("AssignExpr Checking...\n");
+    // printf("AssignExpr Checking...\n");
 //    //Get last added scope in vector...and add decl to that one.
 //    map<Node *, Node *> scope = vector->back();
 //    scope[decl->getIdentifier()] = decl;
 }
 
 Type* ArithmeticExpr::GetType(){
-  printf("ArithmeticExpr GetType Checking...\n");
+  // printf("ArithmeticExpr GetType Checking...\n");
   // check if unary or binary
   // TODO: Should we check this, left, and right?
   if(left){
@@ -34,22 +34,16 @@ Type* ArithmeticExpr::GetType(){
 }
 
 Type* VarExpr::GetType(){
-  printf("VarExpr GetType Checking...\n");
+  // printf("VarExpr GetType Checking...\n");
   char *symbol = id->getName();
-  printf("Search the symbol...%s\n", symbol);
+  // printf("Search the symbol...%s\n", symbol);
   
   for(int i = symbolTableVector->NumElements()-1; i >= 0; i--){ 
     SymbolTable *table = symbolTableVector->Nth(i);
     if(table->contains(symbol) == 1){
-      printf("Found the symbol...%s\n", symbol);
       
-      // printf("Node: %s", n->GetPrintNameForNode());
-      // Decl *decl = dynamic_cast<Decl*>(table->lookup(symbol));
-      
-      printf("in here\n");
       DeclStmt *d = dynamic_cast<DeclStmt*>(table->lookup(symbol));
 
-       printf("oh...");
       return d->GetType();
     }
   }
@@ -57,7 +51,7 @@ Type* VarExpr::GetType(){
 }
 
 void ArithmeticExpr::Check(){
-  printf("ArithmeticExpr Checking...\n");
+  // printf("ArithmeticExpr Checking...\n");
 
     // Check left and right
     left->Check();

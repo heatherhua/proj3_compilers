@@ -23,9 +23,7 @@ Decl::Decl(Identifier *n) : Node(*n->GetLocation()) {
 
 Type* Decl::GetType(){
     Type * type;
-    printf("Getting the type of the Decl...\n");
     if(strcmp(this->GetPrintNameForNode(), "VarDecl") == 0){
-        printf("THIS IS A VARDECL!\n\n");
         type = dynamic_cast<VarDecl*>(this)->GetType();
     } else if (strcmp(this->GetPrintNameForNode(), "FnDecl") == 0) {
         type = dynamic_cast<FnDecl*>(this)->GetType();
@@ -58,10 +56,8 @@ void VarDecl::Check(){
     
     for(int i = symbolTableVector->NumElements()-1; i >= 0; i--){ 
         char *symbol = this->getIdentifier()->getName();
-        std::cout << "VarDecl checking..." << symbol << "\n";
-         printf("Symbol, %s\n", symbol);
-         printf("symbolTableVector->contains() %d\n", 
-             symbolTableVector->Nth(i)->contains(symbol) == 1 );
+        // std::cout << "VarDecl checking..." << symbol << "\n";
+         // printf("Symbol, %s\n", symbol);
         if(symbolTableVector->Nth(i)->contains(symbol) == 1){
             Decl *decl = dynamic_cast<Decl*>(symbolTableVector->Nth(i)->lookup(symbol));
             
@@ -90,7 +86,7 @@ FnDecl::FnDecl(Identifier *n, Type *r, List<VarDecl*> *d) : Decl(n) {
 }
 
 void FnDecl::Check(){
-    printf("Checking function decl... %s\n", this->getIdentifier()->getName());
+    // printf("Checking function decl... %s\n", this->getIdentifier()->getName());
 
     if(symbolTableVector->Last()->contains(this->getIdentifier()->getName())){
         Decl *old = dynamic_cast<Decl*>(symbolTableVector->Last()->lookup(this->getIdentifier()->getName()));
@@ -144,7 +140,6 @@ void FnDecl::Check(){
             }
         }
     }
-    std::cout << "Is there missing return?..." ;
     if(returnType != Type::voidType && found == false){
         ReportError::ReturnMissing(this);
     }
