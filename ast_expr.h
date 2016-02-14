@@ -19,7 +19,7 @@
 #include "list.h"
  #include "error.h"
 
-Identifier* missingDecl;
+extern Identifier* missingDecl;
 
 void yyerror(const char *msg);
 

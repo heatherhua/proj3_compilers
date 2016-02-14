@@ -11,7 +11,7 @@
  #include "errors.h"
  #include "ast.h"
 
-extern Identifier * missingDecl;
+Identifier * missingDecl;
 
 Type* ArithmeticExpr::GetType(){
   // printf("ArithmeticExpr GetType Checking...\n");
@@ -70,8 +70,8 @@ void AssignExpr::Check() {
 }
 
 void ArithmeticExpr::Check(){
-  // printf("ArithmeticExpr Checking...\n");
-
+  // printf("ArithmeticExpr Checking...missing %s\n", missingDecl->getName());
+  
     // Check left and right
     if(left) left->Check();
     right->Check();
@@ -95,10 +95,11 @@ void ArithmeticExpr::Check(){
       }
     }
     else{
-      // if(strcmp(missingDecl->getName(), dynamic_cast<VarExpr*>(right)->id->getName()) == 0){
-      //   // printf("Missing decl: %s\n", missingDecl->getName());
-      //   // symbolTableVector->Last()->insert(missingDecl->getName(), new VarDecl(right->GetIdentifier(), Type::vec4Type));
-      // }
+      if(missingDecl){
+        // printf("Missing decl: %s\n", missingDecl->getName());
+        symbolTableVector->Last()->insert(missingDecl->getName(), new VarDecl(missingDecl, Type::floatType));
+        missingDecl = NULL;
+      }
       // check if unary is scalar
       if((right->GetType()->Compare(Type::intType) || 
             right->GetType()->Compare(Type::floatType)) != true) {
@@ -144,8 +145,6 @@ void VarExpr::Check(){
   // printf("Checking VarExpr...%s\n", symbol);
   for(int i = symbolTableVector->NumElements()-1; i >= 0; i--){ 
         // printf("symbol, %s\n", symbol);
-        // printf("symbolTableVector->contains() %d\n", 
-            // symbolTableVector->Nth(i)->contains(symbol) == 1 );
          if(symbolTableVector->Nth(i)->contains(symbol) == 1){
           found = true;
           break;
@@ -221,10 +220,11 @@ FieldAccess::FieldAccess(Expr *b, Identifier *f)
     if(base){
       base->Check();
 
-      // if(strcmp(missingDecl->getName(), field->getName()) == 0){
-      //   // printf("Missing decl: %s\n", missingDecl->getName());
-      //   symbolTableVector->Last()->insert(missingDecl->getName(), new VarDecl(field, Type::vec4Type));
-      // }
+      if(missingDecl){
+         // printf("Missing decl: %s\n", missingDecl->getName());
+        symbolTableVector->Last()->insert(missingDecl->getName(), new VarDecl(field, Type::vec4Type));
+        missingDecl = NULL;
+      }
       
       Type * type = base->GetType();
       if((
