@@ -53,20 +53,18 @@ void StmtBlock::PrintChildren(int indentLevel) {
 
 void StmtBlock::Check() {
     printf("Checking stmtblock. \n");
+    printf(" ........... \n\n");
     // Remember parser actually only appends to stmt list. 
     // VarDecl is reported as DeclStmt
-    //std::cout << "Number of scopes: " << symbolTableVector->NumElements() << "\n";
-//    
-//    printf("checking stmtblock w/ %d elements\n",stmts->NumElements());
     for(int i = 0; i < stmts->NumElements(); i++){
-        printf("stmt %d: %s\n", i, stmts->Nth(i)->GetPrintNameForNode());
+        // printf("stmt %d: %s\n", i, stmts->Nth(i)->GetPrintNameForNode());
         if(strcmp(stmts->Nth(i)->GetPrintNameForNode(), "StmtBlock") == 0){
             SymbolTable *newScope = new SymbolTable();
             symbolTableVector->Append(newScope);
-            std::cout << "Making new scope in stmtblock " << symbolTableVector->NumElements() << "\n";
+            // std::cout << "Making new scope in stmtblock " << symbolTableVector->NumElements() << "\n";
             stmts->Nth(i)->Check();
             symbolTableVector->RemoveAt(symbolTableVector->NumElements()-1);
-            std::cout << "Number of scopes: " << symbolTableVector->NumElements() << "\n";
+            // std::cout << "Number of scopes: " << symbolTableVector->NumElements() << "\n";
         } else {
             stmts->Nth(i)->Check();
         }
@@ -75,18 +73,7 @@ void StmtBlock::Check() {
     	// stmts->Nth(i)->Check();
         // std::cout << "Number of scopes: " << symbolTableVector->NumElements() << "\n";
     }
-
-    
-
-
-//	//If curr is a VarDecl, store it
-//	//If curr is Stmt... do something else
-//	curr->Check(vector);
-//	// Get last scope in vector and add to that one
-//    }
-//    
-//    std::cout << "Number of scopes: " << vector->size() << "\n";
-
+    printf(" ........... \n\n");
 }
 
 DeclStmt::DeclStmt(Decl *d) {
@@ -95,12 +82,12 @@ DeclStmt::DeclStmt(Decl *d) {
 }
 
 void DeclStmt::Check() {
-    printf("DeclStmt checking\n");
     //just checking for errors in this scope
     bool error = false;
     char *symbol = decl->getIdentifier()->getName();
-    printf("symbol, %s\n", symbol);
-    printf("symbolTableVector->contains() %d\n", symbolTableVector->Last()->contains(symbol) );
+    printf("DeclStmt checking...%s\n", symbol);
+    // printf("symbol, %s\n", symbol);
+    // printf("symbolTableVector->contains() %d\n", symbolTableVector->Last()->contains(symbol) );
     Decl *o;
 
     if(symbolTableVector->Last()->contains(symbol) == 1){
@@ -133,7 +120,7 @@ ConditionalStmt::ConditionalStmt(Expr *t, Stmt *b) {
 }
 
 void ConditionalStmt::Check(){
-    printf("Checking ConditionalStmt. \n");
+    printf("Checking ConditionalStmt... \n");
     bool found = false;
 
     if((strcmp(test->GetPrintNameForNode(),"ArithmeticExpr")) == 0 ||
@@ -156,7 +143,7 @@ ForStmt::ForStmt(Expr *i, Expr *t, Expr *s, Stmt *b): LoopStmt(t, b) {
 }
 
 void ForStmt::Check(){
-    printf("Checking Forstmt. \n");
+    printf("Checking Forstmt... \n");
     //make new symboltable
     SymbolTable *newScope = new SymbolTable();
     symbolTableVector->Append(newScope);
@@ -179,9 +166,9 @@ void ForStmt::Check(){
     body->Check();
 
     // pop
-    std::cout << "\n\nNumber of scopes BEFORE POP: " << symbolTableVector->NumElements() << "\n";
+    // std::cout << "\n\nNumber of scopes BEFORE POP: " << symbolTableVector->NumElements() << "\n";
     symbolTableVector->RemoveAt(symbolTableVector->NumElements()-1);
-    std::cout << "Number of scopes AFTER POP: " << symbolTableVector->NumElements() << "\n";
+    // std::cout << "Number of scopes AFTER POP: " << symbolTableVector->NumElements() << "\n";
 }
 
 void ForStmt::PrintChildren(int indentLevel) {
@@ -199,7 +186,7 @@ void WhileStmt::PrintChildren(int indentLevel) {
 }
 
 void WhileStmt::Check(){
-        printf("Checking WhileStmt. \n");
+        printf("Checking WhileStmt... \n");
         //make new symboltable
         SymbolTable *newScope = new SymbolTable();
         symbolTableVector->Append(newScope);
@@ -232,7 +219,7 @@ void IfStmt::Check(){
     //Stmt *elseBody;
     //Expr *test;
     //Stmt *body;
-        printf("Checking Ifstmt. \n");
+        printf("Checking Ifstmt... \n");
 
         ConditionalStmt::Check();
         body->Check();
@@ -274,7 +261,7 @@ void SwitchLabel::PrintChildren(int indentLevel) {
 void SwitchLabel::Check(){
     //     Expr     *label;
     // Stmt     *stmt;
-    printf("Checking SwitchLabel. \n");
+    printf("Checking SwitchLabel... \n");
 
     // check label
     printf("Value of SwitchLabel:label %s\n", label->GetPrintNameForNode());
@@ -296,7 +283,7 @@ void SwitchLabel::Check(){
 }
 
 void BreakStmt::Check(){
-    printf("Checking BreakStmt. \n");
+    printf("Checking BreakStmt... \n");
 
     bool found = false;
     Node * it = this;
@@ -342,11 +329,11 @@ void SwitchStmt::Check(){
     // TODO: FIND OUT SCOPING!!! ***********************/
        // printf("Checking SwitchStmt. \n");
         // verify the expr
-        printf("Value of SwitchSTmt:Expr: %s\n", expr->GetPrintNameForNode());
+        printf("Value of SwitchStmt:Expr: %s\n", expr->GetPrintNameForNode());
         
         // check if expr is correct type
         // printing type
-        printf("Getting Type expr in switch: %s\n\n", expr->GetType()->GetPrintNameForNode());
+        // printf("Getting Type expr in switch: %s\n\n", expr->GetType()->GetPrintNameForNode());
         expr->Check();
 
         // verify all stmts in List<Stmt>

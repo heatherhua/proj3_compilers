@@ -15,6 +15,8 @@
 #define _H_ast_scope
 
 #include "list.h"
+// #include "ast.h"
+#include <iostream>
 #include <map>
 #include <vector>
 #include <string>
@@ -30,11 +32,14 @@ class SymbolTable
         
         void insert(char* symbol, Node* info) {
             std::string sym(symbol);
-            table.insert(std::pair<string, Node*>(symbol, info));
+            table.insert(std::pair<string, Node*>(sym, info));
+            std::cout << "Inserted : " << sym << "...\n";
         }
         
         Node* lookup(char* id){
             std::string s(id);
+            std::cout << "Looked up : " << s << "\n";
+            // return table.find(s)->second;
             return table.at(s);
         }
         

@@ -35,6 +35,7 @@ class Decl : public Node
     Decl(Identifier *name);
     Identifier * getIdentifier();
     virtual void Check(){}
+    virtual Type *GetType();
     friend ostream& operator<<(ostream& out, Decl *d) { return out << d->id; }
 };
 
@@ -49,6 +50,7 @@ class VarDecl : public Decl
     const char *GetPrintNameForNode() { return "VarDecl"; }
     void PrintChildren(int indentLevel);
     void Check();
+    Type * GetType(){ return type; }
 };
 
 class VarDeclError : public VarDecl
@@ -57,6 +59,7 @@ class VarDeclError : public VarDecl
     VarDeclError() : VarDecl() { yyerror(this->GetPrintNameForNode()); };
     const char *GetPrintNameForNode() { return "VarDeclError"; }
     void Check();
+    Type * GetType();
 };
 
 class FnDecl : public Decl 
@@ -71,6 +74,7 @@ class FnDecl : public Decl
     FnDecl(Identifier *name, Type *returnType, List<VarDecl*> *formals);
     void SetFunctionBody(Stmt *b);
     void Check();
+    Type * GetType(){ return returnType; }
     const char *GetPrintNameForNode() { return "FnDecl"; }
     void PrintChildren(int indentLevel);
 };
@@ -81,6 +85,7 @@ class FormalsError : public FnDecl
     FormalsError() : FnDecl() { yyerror(this->GetPrintNameForNode()); }
     const char *GetPrintNameForNode() { return "FormalsError"; }
     void Check();
+    Type * GetType();
 };
 
 #endif

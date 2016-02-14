@@ -33,6 +33,27 @@ Type* ArithmeticExpr::GetType(){
   return Type::errorType;
 }
 
+Type* VarExpr::GetType(){
+  printf("VarExpr GetType Checking...\n");
+  char *symbol = id->getName();
+  
+  for(int i = symbolTableVector->NumElements()-1; i >= 0; i--){ 
+    SymbolTable *table = symbolTableVector->Nth(i);
+    if(table->contains(symbol) == 1){
+      printf("Found the symbol...%s\n", symbol);
+      Node *n = table->lookup(symbol);
+      // printf("Node: %s", n->GetPrintNameForNode());
+      // Decl *decl = dynamic_cast<Decl*>(table->lookup(symbol));
+      printf("oh...");
+      Decl *decl = dynamic_cast<Decl*>(n);
+
+      // printf("oh...");
+      return decl->GetType();
+    }
+  }
+  return Type::errorType;
+}
+
 void ArithmeticExpr::Check(){
   printf("ArithmeticExpr Checking...\n");
 
@@ -44,8 +65,11 @@ void ArithmeticExpr::Check(){
     if(left){
       // if types dont match or values not scalar, report error
       if(!(left->GetType()->Compare(right->GetType()))){
+
+        //TODO Look up left in Symbol tables and get the type of THAT
         ReportError::IncompatibleOperands(op, left->GetType(),
            right->GetType());
+
       }
       else{ // if not scalar
         if((left->GetType()->Compare(Type::intType) || 
@@ -97,22 +121,21 @@ void VarExpr::PrintChildren(int indentLevel) {
 void VarExpr::Check(){
   // make sure identifier exists
   bool found = false;
-    
-    for(int i = symbolTableVector->NumElements()-1; i >= 0; i--){ 
-        char *symbol = this->id->getName();
-        printf("symbol, %s\n", symbol);
-        printf("symbolTableVector->contains() %d\n", 
-            symbolTableVector->Nth(i)->contains(symbol) == 1 );
+  char *symbol = this->id->getName();
+  printf("Checking VarExpr...%s\n", symbol);
+  for(int i = symbolTableVector->NumElements()-1; i >= 0; i--){ 
+        // printf("symbol, %s\n", symbol);
+        // printf("symbolTableVector->contains() %d\n", 
+            // symbolTableVector->Nth(i)->contains(symbol) == 1 );
          if(symbolTableVector->Nth(i)->contains(symbol) == 1){
-
           found = true;
           break;
          } 
-    }
+  }
 
-    if(!found){
-      ReportError::IdentifierNotDeclared(this->id, LookingForVariable);
-    }
+  if(!found){
+    ReportError::IdentifierNotDeclared(this->id, LookingForVariable);
+  }
 }
 
 Operator::Operator(yyltype loc, const char *tok) : Node(loc) {

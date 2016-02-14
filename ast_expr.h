@@ -30,7 +30,7 @@ class Expr : public Stmt
     friend std::ostream& operator<< (std::ostream& stream, Expr * expr) {
         return stream << expr->GetPrintNameForNode();
     }
-   virtual Type *GetType(){return Type::errorType; }
+   virtual Type *GetType(){ return Type::errorType; }
 };
 
 class ExprError : public Expr
@@ -49,7 +49,7 @@ class EmptyExpr : public Expr
 {
   public:
     const char *GetPrintNameForNode() { return "Empty"; }
-    Type *GetType(){ return Type::errorType; }
+    // Type *GetType(){ return Type::errorType; }
 };
 
 class IntConstant : public Expr 
@@ -101,9 +101,9 @@ class VarExpr : public Expr
     const char *GetPrintNameForNode() { return "VarExpr"; }
     void PrintChildren(int indentLevel);
     void Check();
-    // using pseudotype bc simpler than checking for nulltype
-    Type *GetType(){ return Type::identifierType; }
 
+    // using pseudotype bc simpler than checking for nulltype
+    Type *GetType();
 };
 
 class Operator : public Node 

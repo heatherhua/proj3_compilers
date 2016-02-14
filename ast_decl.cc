@@ -20,6 +20,18 @@ Decl::Decl(Identifier *n) : Node(*n->GetLocation()) {
     (id=n)->SetParent(this); 
 }
 
+Type* Decl::GetType(){
+    Type * type;
+    printf("Getting the type of the Decl...\n");
+    if(strcmp(this->GetPrintNameForNode(), "VarDecl") == 0){
+        printf("THIS IS A VARDECL!\n\n");
+        type = dynamic_cast<VarDecl*>(this)->GetType();
+    } else if (strcmp(this->GetPrintNameForNode(), "FnDecl") == 0) {
+        type = dynamic_cast<FnDecl*>(this)->GetType();
+    }
+    return type;
+}
+
 /*void Decl::Check(){    
     std::cout << "Decl checking..." << "\n";
     
@@ -41,12 +53,12 @@ VarDecl::VarDecl(Identifier *n, Type *t) : Decl(n) {
 }
   
 void VarDecl::Check(){
-    std::cout << "VarDecl checking..." << "\n";
     bool error = false;
     
     for(int i = symbolTableVector->NumElements()-1; i >= 0; i--){ 
         char *symbol = this->getIdentifier()->getName();
-        printf("Symbol, %s\n", symbol);
+        std::cout << "VarDecl checking..." << symbol << "\n";
+        // printf("Symbol, %s\n", symbol);
         // printf("symbolTableVector->contains() %d\n", 
             // symbolTableVector->Nth(i)->contains(symbol) == 1 );
         if(symbolTableVector->Nth(i)->contains(symbol) == 1){
@@ -77,7 +89,7 @@ FnDecl::FnDecl(Identifier *n, Type *r, List<VarDecl*> *d) : Decl(n) {
 }
 
 void FnDecl::Check(){
-    printf("Checking function decl. \n");
+    printf("Checking function decl... %s\n", this->getIdentifier()->getName());
 
     if(symbolTableVector->Last()->contains(this->getIdentifier()->getName())){
         Decl *old = dynamic_cast<Decl*>(symbolTableVector->Last()->lookup(this->getIdentifier()->getName()));
@@ -89,12 +101,12 @@ void FnDecl::Check(){
     SymbolTable *newScope = new SymbolTable();
     symbolTableVector->Append(newScope);
 
-    std::cout << "Number of scopes: " << symbolTableVector->NumElements() << "\n";
+    // std::cout << "Number of scopes: " << symbolTableVector->NumElements() << "\n";
 
     // Check and add formals
     for(int i = 0; i < formals->NumElements(); i++) {
         char *symbol = formals->Nth(i)->getIdentifier()->getName();
-        printf("symbol, %s\n", symbol);
+        // printf("symbol, %s\n", symbol);
 
         if(symbolTableVector->Last()->contains(symbol) == 1){
             Decl *decl = dynamic_cast<Decl*>(symbolTableVector->Nth(i)->lookup(symbol));
