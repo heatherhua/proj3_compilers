@@ -72,12 +72,10 @@ void AssignExpr::Check() {
 void ArithmeticExpr::Check(){
   // printf("ArithmeticExpr Checking...missing %s\n", missingDecl->getName());
   
-    // Check left and right
-    if(left) left->Check();
-    right->Check();
-
     // check if unary or binary
     if(left){
+      left->Check();
+      right->Check();
       // if types dont match or values not scalar, report error
       if(!(left->GetType()->Compare(right->GetType()))){
 
@@ -95,8 +93,9 @@ void ArithmeticExpr::Check(){
       }
     }
     else{
+      right->Check();
       if(missingDecl){
-        // printf("Missing decl: %s\n", missingDecl->getName());
+        printf("Missing decl: %s\n", missingDecl->getName());
         symbolTableVector->Last()->insert(missingDecl->getName(), new VarDecl(missingDecl, Type::floatType));
         missingDecl = NULL;
       }
