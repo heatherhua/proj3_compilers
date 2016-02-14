@@ -36,9 +36,14 @@ Type* VarExpr::GetType(){
     SymbolTable *table = symbolTableVector->Nth(i);
     if(table->contains(symbol) == 1){
       
+      VarDecl *p = dynamic_cast<VarDecl*>(table->lookup(symbol));
       DeclStmt *d = dynamic_cast<DeclStmt*>(table->lookup(symbol));
-
-      return d->GetType();
+      if(d){
+        return d->GetType();
+      }
+       else if(p){
+         return p->GetType();
+      }
     }
   }
   return Type::errorType;
@@ -61,17 +66,13 @@ void AssignExpr::Check() {
       right->GetType());
 
   }
-    // printf("AssignExpr Checking...\n");
-//    //Get last added scope in vector...and add decl to that one.
-//    map<Node *, Node *> scope = vector->back();
-//    scope[decl->getIdentifier()] = decl;
 }
 
 void ArithmeticExpr::Check(){
   // printf("ArithmeticExpr Checking...\n");
 
     // Check left and right
-    left->Check();
+    if(left) left->Check();
     right->Check();
 
     // check if unary or binary
@@ -95,10 +96,10 @@ void ArithmeticExpr::Check(){
     else{
       // check if unary is scalar
       if((right->GetType()->Compare(Type::intType) || 
-            right->GetType()->Compare(Type::floatType)) != true)
+            right->GetType()->Compare(Type::floatType)) != true) {
         ReportError::IncompatibleOperand(op, right->GetType());
+      }
     }
-
 }
 
 IntConstant::IntConstant(yyltype loc, int val) : Expr(loc) {
