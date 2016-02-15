@@ -52,9 +52,17 @@ Type* VarExpr::GetType(){
 
 void AssignExpr::Check() {
     // Expr *left, *right;
+
+  // Just take the right's type when the left isn't declared
+  Identifier *leftIdentifier = dynamic_cast<VarExpr*>(left)->GetIdentifier();
+  char* leftName = leftIdentifier->getName();
+
+  if(missingDecls->contains(leftName) && right){
+    symbolTableVector->Last()->insert(leftName, new VarDecl(leftIdentifier, right->GetType()));
+  }
+
   left->Check();
   right->Check();
-
   //TODO Check types... error recovery.
 
   if(!(left->GetType()->Compare(right->GetType())) &&
@@ -77,6 +85,7 @@ void ArithmeticExpr::Check(){
       // printf("going left for some reason...");
       left->Check();
       right->Check();
+
       // if types dont match or values not scalar, report error
       if(!(left->GetType()->Compare(right->GetType()))){
 
