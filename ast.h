@@ -47,6 +47,7 @@
 using namespace std;
 
 extern List<SymbolTable *> *symbolTableVector;
+extern SymbolTable *missingDecls;
 
 class Node  {
   protected:

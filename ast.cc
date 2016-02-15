@@ -9,6 +9,7 @@
 #include <stdio.h>  // printf
 
 List<SymbolTable *> *symbolTableVector = new List<SymbolTable*>;
+SymbolTable *missingDecls = new SymbolTable();
 
 Node::Node(yyltype loc) {
     location = new yyltype(loc);

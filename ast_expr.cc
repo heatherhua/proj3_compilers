@@ -74,6 +74,7 @@ void ArithmeticExpr::Check(){
   
     // check if unary or binary
     if(left){
+      // printf("going left for some reason...");
       left->Check();
       right->Check();
       // if types dont match or values not scalar, report error
@@ -93,18 +94,38 @@ void ArithmeticExpr::Check(){
       }
     }
     else{
-      right->Check();
-      if(missingDecl){
-        printf("Missing decl: %s\n", missingDecl->getName());
-        symbolTableVector->Last()->insert(missingDecl->getName(), new VarDecl(missingDecl, Type::floatType));
-        missingDecl = NULL;
+      Identifier *rightIdentifier = dynamic_cast<VarExpr*>(right)->GetIdentifier();
+      char* rightName = rightIdentifier->getName();
+
+      if(missingDecls->contains(rightName)){
+        symbolTableVector->Last()->insert(rightName, new VarDecl(rightIdentifier, Type::floatType));
       }
+      right->Check();
       // check if unary is scalar
       if((right->GetType()->Compare(Type::intType) || 
             right->GetType()->Compare(Type::floatType)) != true) {
         ReportError::IncompatibleOperand(op, right->GetType());
       }
     }
+}
+
+void VarExpr::Check(){
+  // make sure identifier exists
+  bool found = false;
+  char *symbol = this->id->getName();
+  // printf("Checking VarExpr...%s\n", symbol);
+  for(int i = symbolTableVector->NumElements()-1; i >= 0; i--){ 
+        // printf("symbol, %s\n", symbol);
+         if(symbolTableVector->Nth(i)->contains(symbol) == 1){
+          found = true;
+          break;
+         } 
+  }
+
+  if(!found){
+    missingDecls->insert(this->id->getName(), NULL);
+    ReportError::IdentifierNotDeclared(this->id, LookingForVariable);
+  }
 }
 
 IntConstant::IntConstant(yyltype loc, int val) : Expr(loc) {
@@ -135,25 +156,6 @@ VarExpr::VarExpr(yyltype loc, Identifier *ident) : Expr(loc) {
 
 void VarExpr::PrintChildren(int indentLevel) {
     id->Print(indentLevel+1);
-}
-
-void VarExpr::Check(){
-  // make sure identifier exists
-  bool found = false;
-  char *symbol = this->id->getName();
-  // printf("Checking VarExpr...%s\n", symbol);
-  for(int i = symbolTableVector->NumElements()-1; i >= 0; i--){ 
-        // printf("symbol, %s\n", symbol);
-         if(symbolTableVector->Nth(i)->contains(symbol) == 1){
-          found = true;
-          break;
-         } 
-  }
-
-  if(!found){
-    ReportError::IdentifierNotDeclared(this->id, LookingForVariable);
-    missingDecl = this->id;
-  }
 }
 
 Operator::Operator(yyltype loc, const char *tok) : Node(loc) {
@@ -219,11 +221,11 @@ FieldAccess::FieldAccess(Expr *b, Identifier *f)
     if(base){
       base->Check();
 
-      if(missingDecl){
+      // if(missingDecl){
          // printf("Missing decl: %s\n", missingDecl->getName());
-        symbolTableVector->Last()->insert(missingDecl->getName(), new VarDecl(field, Type::vec4Type));
-        missingDecl = NULL;
-      }
+        // symbolTableVector->Last()->insert(missingDecl->getName(), new VarDecl(field, Type::vec4Type));
+        // missingDecls.insert();
+      // }
       
       Type * type = base->GetType();
       if((

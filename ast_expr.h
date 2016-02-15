@@ -103,7 +103,7 @@ class VarExpr : public Expr
     const char *GetPrintNameForNode() { return "VarExpr"; }
     void PrintChildren(int indentLevel);
     void Check();
-
+    Identifier * GetIdentifier(){ return id; }
     // using pseudotype bc simpler than checking for nulltype
     Type *GetType();
 };
