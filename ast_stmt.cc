@@ -347,13 +347,13 @@ void SwitchStmt::Check(){
         expr->Check();
 
         // verify all stmts in List<Stmt>
-        //for(int i = 0; i < cases->NumElements(); i++){
-        //    printf("Value of SwitchStmt:case %d: %s\n", i, cases->Nth(i)->GetPrintNameForNode());
-        //    cases->Nth(i)->Check();
-       // }
+        for(int i = 0; i < cases->NumElements(); i++){
+           printf("Value of SwitchStmt:case %d: %s\n", i, cases->Nth(i)->GetPrintNameForNode());
+           cases->Nth(i)->Check();
+        }
         // verify default
         //if(def) printf("Value of SwitchSTmt:def: %s\n", def->GetPrintNameForNode());
-       // if(def) def->Check();
+       if(def) def->Check();
 }
 
 SwitchStmt::SwitchStmt(Expr *e, List<Stmt *> *c, Default *d) {
