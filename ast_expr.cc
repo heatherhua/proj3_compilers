@@ -237,6 +237,76 @@ FieldAccess::FieldAccess(Expr *b, Identifier *f)
     (field=f)->SetParent(this);
 }
 
+Type * FieldAccess::GetType(){
+    bool error = false;
+
+    if(base){
+      Type * type = base->GetType();
+      if((
+        (type->Compare(Type::vec2Type)) ||   
+        (type->Compare(Type::vec3Type)) ||   
+        (type->Compare(Type::vec4Type)) ) == false
+        ) {
+        error = true;
+        return Type::errorType;
+      }
+      // Check size...no more than 4
+      if(strlen(field->getName()) > 4){
+        error = true;
+        return Type::errorType;
+      }
+
+      char* letters = field->getName();
+      //Check if swizzle is valid in general
+      for(int i = 0; i < strlen(letters); i++){
+        if(letters[i] != 'x' &&
+          letters[i] != 'y' && 
+          letters[i] != 'z' && 
+          letters[i] != 'w') { 
+          error = true;
+          return Type::errorType;
+          break;
+        }
+      }
+
+      //Check for vector boundaries
+      // vec2 -> cannot have z or w
+      if(type->Compare(Type::vec2Type)){
+        for(int i = 0; i < strlen(letters); i++){
+          if(letters[i] == 'z' || letters[i] == 'w'){
+            error = true;
+          return Type::errorType;
+            break;
+          }
+        }
+      }
+      // vec3 -> cannot have w
+      else if(type->Compare(Type::vec3Type)){
+        for(int i = 0; i < strlen(letters); i++){
+          if(letters[i] == 'w'){
+            error = true;
+           return Type::errorType; 
+            break;
+          }
+        }
+      }
+    }
+
+  if(!error){
+    int num = strlen(field->getName());
+    if(num == 1){
+      return Type::floatType;
+    } else if(num == 2){
+      return Type::vec2Type;
+    } else if(num == 3){
+      return Type::vec3Type;
+    } else if(num == 4){
+      return Type::vec4Type;
+    }
+  }
+  return Type::errorType;
+}
+
   void FieldAccess::Check(){
     // printf("Checking Field Access...%s\n\n", field->getName());
     // Check if VarExpr is vector type

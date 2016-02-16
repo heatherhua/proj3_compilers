@@ -188,6 +188,8 @@ class LValue : public Expr
 {
   public:
     LValue(yyltype loc) : Expr(loc) {}
+      // TODO: could cause inheritance problems but shouldnt
+    virtual Type *GetType(){return Type::errorType;}
 };
 
 class ArrayAccess : public LValue 
@@ -217,6 +219,7 @@ class FieldAccess : public LValue
     const char *GetPrintNameForNode() { return "FieldAccess"; }
     void PrintChildren(int indentLevel);
     void Check();
+    Type * GetType();
 };
 
 /* Like field access, call is used both for qualified base.field()
