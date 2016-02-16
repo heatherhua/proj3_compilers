@@ -108,12 +108,26 @@ void ArithmeticExpr::Check(){
 
       else{ // if left and right not scalar, report error for each
         if((left->GetType()->Compare(Type::intType) || 
-            left->GetType()->Compare(Type::floatType)) != true){
+            left->GetType()->Compare(Type::floatType) ||
+            left->GetType()->Compare(Type::vec2Type) ||
+            left->GetType()->Compare(Type::vec3Type) ||
+            left->GetType()->Compare(Type::vec4Type) ||
+            left->GetType()->Compare(Type::mat2Type) ||
+            left->GetType()->Compare(Type::mat3Type) ||
+            left->GetType()->Compare(Type::mat4Type))
+            != true){
           ReportError::IncompatibleOperands(op,left->GetType(),
               right->GetType());       
         }
         if((right->GetType()->Compare(Type::intType) || 
-            right->GetType()->Compare(Type::floatType)) != true){
+            right->GetType()->Compare(Type::floatType) ||
+            right->GetType()->Compare(Type::vec2Type) ||
+            right->GetType()->Compare(Type::vec3Type) ||
+            right->GetType()->Compare(Type::vec4Type) ||
+            right->GetType()->Compare(Type::mat2Type) ||
+            right->GetType()->Compare(Type::mat3Type) ||
+            right->GetType()->Compare(Type::mat4Type))
+            != true){
           ReportError::IncompatibleOperands(op,left->GetType(),
               right->GetType());       
         }
@@ -125,8 +139,81 @@ void ArithmeticExpr::Check(){
 
       // Check if unary is scalar
       if((right->GetType()->Compare(Type::intType) || 
-            right->GetType()->Compare(Type::floatType)) != true) {
+            right->GetType()->Compare(Type::floatType) ||
+            right->GetType()->Compare(Type::vec2Type) ||
+            right->GetType()->Compare(Type::vec3Type) ||
+            right->GetType()->Compare(Type::vec4Type) ||
+            right->GetType()->Compare(Type::mat2Type) ||
+            right->GetType()->Compare(Type::mat3Type) ||
+            right->GetType()->Compare(Type::mat4Type))
+            != true){
         ReportError::IncompatibleOperand(op, right->GetType());
+      }
+    }
+}
+
+void RelationalExpr::Check(){
+  // printf("ArithmeticExpr Checking...missing %s\n", missingDecl->getName());
+  
+    // check if unary or binary
+    if(left){
+      // printf("Arithmetic, this is binary...");
+      left->Check();
+      right->Check();
+
+      // if types dont match or values not scalar, report error
+      // printf("Comparing left and right types...");
+      if(!(left->GetType()->Compare(right->GetType()))){
+        ReportError::IncompatibleOperands(op, left->GetType(),
+           right->GetType());
+      }
+
+      else{ // if left and right not scalar, report error for each
+        if((left->GetType()->Compare(Type::intType) || 
+            left->GetType()->Compare(Type::floatType) ||
+            left->GetType()->Compare(Type::vec2Type) ||
+            left->GetType()->Compare(Type::vec3Type) ||
+            left->GetType()->Compare(Type::vec4Type) ||
+            left->GetType()->Compare(Type::mat2Type) ||
+            left->GetType()->Compare(Type::mat3Type) ||
+            left->GetType()->Compare(Type::mat4Type))
+            != true){
+          ReportError::IncompatibleOperands(op,left->GetType(),
+              right->GetType());       
+        }
+        if((right->GetType()->Compare(Type::intType) || 
+            right->GetType()->Compare(Type::floatType) ||
+            right->GetType()->Compare(Type::vec2Type) ||
+            right->GetType()->Compare(Type::vec3Type) ||
+            right->GetType()->Compare(Type::vec4Type) ||
+            right->GetType()->Compare(Type::mat2Type) ||
+            right->GetType()->Compare(Type::mat3Type) ||
+            right->GetType()->Compare(Type::mat4Type))
+            != true){
+          ReportError::IncompatibleOperands(op,left->GetType(),
+              right->GetType());       
+        }
+      }
+    }
+}
+
+void PostfixExpr::Check(){
+  // printf("ArithmeticExpr Checking...missing %s\n", missingDecl->getName());
+  
+    if(left){
+      left->Check();
+
+      // Check if unary is scalar
+      if((left->GetType()->Compare(Type::intType) || 
+            left->GetType()->Compare(Type::floatType) ||
+            left->GetType()->Compare(Type::vec2Type) ||
+            left->GetType()->Compare(Type::vec3Type) ||
+            left->GetType()->Compare(Type::vec4Type) ||
+            left->GetType()->Compare(Type::mat2Type) ||
+            left->GetType()->Compare(Type::mat3Type) ||
+            left->GetType()->Compare(Type::mat4Type))
+            != true){
+        ReportError::IncompatibleOperand(op, left->GetType());
       }
     }
 }
