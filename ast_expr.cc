@@ -39,11 +39,15 @@ Type* VarExpr::GetType(){
       
       VarDecl *p = dynamic_cast<VarDecl*>(table->lookup(symbol));
       DeclStmt *d = dynamic_cast<DeclStmt*>(table->lookup(symbol));
+      Expr *e = dynamic_cast<Expr*>(table->lookup(symbol));
       if(d){
         return d->GetType();
       }
        else if(p){
-         return p->GetType();
+        return p->GetType();
+      }
+      else if(e){
+        return e->GetType();
       }
     }
   }
@@ -51,9 +55,14 @@ Type* VarExpr::GetType(){
 }
 
 void AssignExpr::Check() {
-    // Expr *left, *right;
+  // Expr *left, *right;
 
-  // Just take the right's type when the left isn't declared
+  // printf("Checking ... %s of type %s as %s\n", leftName, 
+    // leftType->GetTypeName(), right->GetType()->GetTypeName());
+  left->Check();
+  right->Check();
+  
+  // Create if never declared
   Identifier *leftIdentifier = dynamic_cast<VarExpr*>(left)->GetIdentifier();
   char* leftName = leftIdentifier->getName();
 
@@ -61,19 +70,23 @@ void AssignExpr::Check() {
     symbolTableVector->Last()->insert(leftName, new VarDecl(leftIdentifier, right->GetType()));
   }
 
-  left->Check();
-  right->Check();
-  //TODO Check types... error recovery.
+  // Get actual type
+  Type * leftType = left->GetType();
+  if(!(leftType->Compare(right->GetType())) &&
+    (!(leftType->Compare(Type::errorType))) &&
+    (!(right->GetType()->Compare(Type::errorType))))
+  {
+    ReportError::IncompatibleOperands(op, leftType, right->GetType());
+  } else{
+  // Assign stuff
+    // printf("Assigning and putting it in scope...\n");
+    for(int i = symbolTableVector->NumElements()-1; i >= 0; i--){ 
+      if(symbolTableVector->Nth(i)->contains(leftName) == 1){
 
-  if(!(left->GetType()->Compare(right->GetType())) &&
-    (left->GetType() != Type::errorType) &&
-    (right->GetType() != Type::errorType)
-    ){
-
-  //TODO Look up left in Symbol tables and get the type of THAT
-    ReportError::IncompatibleOperands(op, left->GetType(),
-      right->GetType());
-
+        symbolTableVector->Nth(i)->update(leftName, right);
+        break;
+      } 
+    }
   }
 }
 
@@ -82,35 +95,35 @@ void ArithmeticExpr::Check(){
   
     // check if unary or binary
     if(left){
-      // printf("going left for some reason...");
+      // printf("Arithmetic, this is binary...");
       left->Check();
       right->Check();
 
       // if types dont match or values not scalar, report error
+      // printf("Comparing left and right types...");
       if(!(left->GetType()->Compare(right->GetType()))){
-
-        //TODO Look up left in Symbol tables and get the type of THAT
         ReportError::IncompatibleOperands(op, left->GetType(),
            right->GetType());
-
       }
-      else{ // if not scalar
+
+      else{ // if left and right not scalar, report error for each
         if((left->GetType()->Compare(Type::intType) || 
             left->GetType()->Compare(Type::floatType)) != true){
+          ReportError::IncompatibleOperands(op,left->GetType(),
+              right->GetType());       
+        }
+        if((right->GetType()->Compare(Type::intType) || 
+            right->GetType()->Compare(Type::floatType)) != true){
           ReportError::IncompatibleOperands(op,left->GetType(),
               right->GetType());       
         }
       }
     }
     else{
-      Identifier *rightIdentifier = dynamic_cast<VarExpr*>(right)->GetIdentifier();
-      char* rightName = rightIdentifier->getName();
-
-      if(missingDecls->contains(rightName)){
-        symbolTableVector->Last()->insert(rightName, new VarDecl(rightIdentifier, Type::floatType));
-      }
+      // Check again. 
       right->Check();
-      // check if unary is scalar
+
+      // Check if unary is scalar
       if((right->GetType()->Compare(Type::intType) || 
             right->GetType()->Compare(Type::floatType)) != true) {
         ReportError::IncompatibleOperand(op, right->GetType());
@@ -229,12 +242,6 @@ FieldAccess::FieldAccess(Expr *b, Identifier *f)
     // Check if VarExpr is vector type
     if(base){
       base->Check();
-
-      // if(missingDecl){
-         // printf("Missing decl: %s\n", missingDecl->getName());
-        // symbolTableVector->Last()->insert(missingDecl->getName(), new VarDecl(field, Type::vec4Type));
-        // missingDecls.insert();
-      // }
       
       Type * type = base->GetType();
       if((

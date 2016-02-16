@@ -69,7 +69,9 @@ void VarDecl::Check(){
     }
     
     // No error
-    symbolTableVector->Last()->insert(this->getIdentifier()->getName(), this);
+    if(!error){
+        symbolTableVector->Last()->insert(this->getIdentifier()->getName(), this);
+    }
 }
 
 void VarDecl::PrintChildren(int indentLevel) { 

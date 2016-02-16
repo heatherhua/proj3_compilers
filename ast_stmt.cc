@@ -102,7 +102,9 @@ void DeclStmt::Check() {
     }
     
     // No error
-    symbolTableVector->Last()->insert(decl->getIdentifier()->getName(), this);
+    if(!error){
+        symbolTableVector->Last()->insert(decl->getIdentifier()->getName(), this);
+    }
 }
 
 void DeclStmt::PrintChildren(int indentLevel) {
