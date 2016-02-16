@@ -304,6 +304,10 @@ void BreakStmt::Check(){
             symbolTableVector->RemoveAt(symbolTableVector->NumElements()-1);
             break;
         }
+        else if( (strcmp(it->GetParent()->GetPrintNameForNode(), "SwitchStmt" )) == 0){
+            found = true;
+            break;
+        }
         else{
             it = it->GetParent();
         }
@@ -348,7 +352,7 @@ void SwitchStmt::Check(){
 
         // verify all stmts in List<Stmt>
         for(int i = 0; i < cases->NumElements(); i++){
-           printf("Value of SwitchStmt:case %d: %s\n", i, cases->Nth(i)->GetPrintNameForNode());
+           //printf("Value of SwitchStmt:case %d: %s\n", i, cases->Nth(i)->GetPrintNameForNode());
            cases->Nth(i)->Check();
         }
         // verify default
