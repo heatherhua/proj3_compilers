@@ -1,5 +1,8 @@
 void main() {
- float b;
- b = 1.0;
- b = true;
+vec2 abc;
+float f;
+f = abc.x; 
+float j;
+j = abc.y; 
 }
+

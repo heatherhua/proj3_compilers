@@ -310,6 +310,7 @@ Type * FieldAccess::GetType(){
   void FieldAccess::Check(){
     // printf("Checking Field Access...%s\n\n", field->getName());
     // Check if VarExpr is vector type
+
     if(base){
       base->Check();
       
@@ -320,16 +321,17 @@ Type * FieldAccess::GetType(){
         (type->Compare(Type::vec4Type)) ) == false
         ) {
         ReportError::InaccessibleSwizzle(field, base);
-        //TODO Do something to stop cascading errors
-        // Make base into a vec4 type
-      }
-      // Check size...no more than 4
-      if(strlen(field->getName()) > 4){
-        ReportError::OversizedVector(field, base);
-      }
-      // vec2 v2; vec2.xyxy is LEGAL --> evaluates to a vec4 
-      // Check if all letters in field are subset of [xyzw]
+      } 
 
+// Logic of reporting errors of swizzles : Piazza 772
+//     if ( invalid swizzle )
+//    report an error;
+// else if swizzle out of bound
+//   report an error;
+// else if oversized vector
+//   report an error;
+
+      bool invalid = false;
       char* letters = field->getName();
       //Check if swizzle is valid in general
       for(int i = 0; i < strlen(letters); i++){
@@ -338,27 +340,39 @@ Type * FieldAccess::GetType(){
           letters[i] != 'z' && 
           letters[i] != 'w') { 
           ReportError::InvalidSwizzle(field, base);
+          invalid = true;
           break;
         }
       }
 
-      //Check for vector boundaries
-      // vec2 -> cannot have z or w
-      if(type->Compare(Type::vec2Type)){
-        for(int i = 0; i < strlen(letters); i++){
-          if(letters[i] == 'z' || letters[i] == 'w'){
-            ReportError::SwizzleOutOfBound(field, base);
-            break;
+      bool out = false;
+      // Check out of bounds
+      if(!invalid){
+        if(type->Compare(Type::vec2Type)){
+          for(int i = 0; i < strlen(letters); i++){
+            if(letters[i] == 'z' || letters[i] == 'w'){
+              ReportError::SwizzleOutOfBound(field, base);
+              out = true;
+              break;
+            }
+          }
+        }
+        // vec3 -> cannot have w
+        else if(type->Compare(Type::vec3Type)){
+          for(int i = 0; i < strlen(letters); i++){
+            if(letters[i] == 'w'){
+              ReportError::SwizzleOutOfBound(field, base);
+              out = true;
+              break;
+            }
           }
         }
       }
-      // vec3 -> cannot have w
-      else if(type->Compare(Type::vec3Type)){
-        for(int i = 0; i < strlen(letters); i++){
-          if(letters[i] == 'w'){
-            ReportError::SwizzleOutOfBound(field, base);
-            break;
-          }
+      
+      if((invalid && out) == false){
+        // Check size...no more than 4
+        if(strlen(field->getName()) > 4){
+          ReportError::OversizedVector(field, base);
         }
       }
     }
