@@ -1,0 +1,11 @@
+README
+------
+
+Approach to Error Recovery
+--------------------------
+We maintain an external SymbolTable map that keeps track of all the variables that have been instantiated, but not declared with any type. When we first detect this error, we report it and then scan the rest of the program to see if it is used again. When it is used again, we look at the context of which it is used to determine the type that it should have been. 
+
+
+Then we create this VarDecl and push it into our scope so that when the user finally corrects this mistake, it won't cause any cascading errors. 
+
+When the user tries to access a field in a vector, it needs to first be valid. This means that if the field access is invalid, it will not report any other errors because the Type will be an error type. This will give only one error at a time in the following order: Inaccessible, Invalid Swizzle, Out of Bounds, and Oversized access. 
